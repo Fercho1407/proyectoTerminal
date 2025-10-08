@@ -1,0 +1,201 @@
+,product_name,category_off,shelf_life_pantry_days,shelf_life_fridge_days,shelf_life_freezer_days,perecedero
+0,Néctar de durazno 1 L,juice-box,270.0,10.0,60.0,0
+1,Sardinas en salsa 155 g,canned-fish,1095.0,0.0,0.0,0
+2,Queso gouda 300 g,cheese-hard,0.0,56.0,180.0,1
+3,Frijol pinto 1 kg,beans-dry,730.0,0.0,0.0,0
+4,Huevo blanco 12 pzas,eggs,0.0,28.0,0.0,1
+5,Azúcar blanca 1 kg,sugar-white,1825.0,0.0,0.0,0
+6,Frijoles refritos 430 g,canned-beans,1095.0,3.0,60.0,1
+7,Sal fina 750 g,salt,3650.0,0.0,0.0,0
+8,Tortillas de maíz 1 kg,tortillas-corn,3.0,7.0,60.0,1
+9,Aguacate Hass,avocado,5.0,7.0,120.0,1
+10,Queso cheddar 200 g,cheese-hard,0.0,56.0,180.0,1
+11,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+12,Azúcar estándar 2 kg,sugar-white,1825.0,0.0,0.0,0
+13,Queso cottage 200 g,cheese-fresh,0.0,10.0,0.0,1
+14,Refresco cola 600 ml,soft-drinks,270.0,270.0,0.0,0
+15,Té negro 20 sobres,tea-bags,730.0,0.0,0.0,0
+16,Aceite vegetal 1 L,oil-vegetable,365.0,0.0,0.0,0
+17,Totopos 200 g,chips,150.0,0.0,0.0,0
+18,Frijoles refritos 430 g,canned-beans,1095.0,3.0,60.0,1
+19,Arroz blanco 500 g,rice-white-dry,730.0,0.0,0.0,0
+20,Té negro 20 sobres,tea-bags,730.0,0.0,0.0,0
+21,Puré de tomate 210 g,canned-tomato,720.0,5.0,60.0,0
+22,Pasta espagueti 500 g,pasta-dry,730.0,0.0,0.0,0
+23,Té negro 20 sobres,tea-bags,730.0,0.0,0.0,0
+24,Brócoli congelado 500 g,frozen-vegetables,0.0,0.0,365.0,1
+25,Carne deshebrada enlatada 300 g,canned-meat,1095.0,3.0,60.0,0
+26,Huevo orgánico 18 pzas,eggs,0.0,28.0,0.0,1
+27,Galletas Marías 170 g,cookies,365.0,0.0,0.0,0
+28,Carne deshebrada enlatada 300 g,canned-meat,1095.0,3.0,60.0,0
+29,Sal fina 750 g,salt,3650.0,0.0,0.0,0
+30,Tortillas de harina 1 kg,tortillas-flour,5.0,7.0,60.0,1
+31,Queso manchego 200 g,cheese-hard,0.0,56.0,180.0,1
+32,Bistec de res 1 kg,beef-fresh,0.0,4.0,365.0,1
+33,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+34,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+35,Detergente líquido 1 L,household-detergent,0.0,0.0,0.0,0
+36,Té verde 25 sobres,tea-bags,730.0,0.0,0.0,0
+37,Queso manchego 200 g,cheese-hard,0.0,56.0,180.0,1
+38,Frijoles refritos 430 g,canned-beans,1095.0,3.0,60.0,1
+39,Cereal de avena 450 g,cereal-box,365.0,0.0,0.0,0
+40,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+41,Arroz blanco 1 kg,rice-white-dry,730.0,0.0,0.0,0
+42,Refresco cola 600 ml,soft-drinks,270.0,270.0,0.0,0
+43,Queso cheddar 200 g,cheese-hard,0.0,56.0,180.0,1
+44,Sardinas en salsa 155 g,canned-fish,1095.0,0.0,0.0,0
+45,Aguacate criollo,avocado,5.0,7.0,120.0,1
+46,Verduras mixtas congeladas 1 kg,frozen-vegetables,0.0,0.0,365.0,1
+47,Café molido 500 g,coffee-ground,365.0,0.0,730.0,0
+48,Jamón enlatado 200 g,canned-meat,1095.0,3.0,60.0,0
+49,Jitomate bola fresco,fresh-tomato,5.0,7.0,180.0,1
+50,Frijol negro 1 kg,beans-dry,730.0,0.0,0.0,0
+51,Galletas Marías 170 g,cookies,365.0,0.0,0.0,0
+52,Atún en aceite 140 g,canned-fish,1095.0,0.0,0.0,0
+53,Leche semidescremada UHT 1L,milk-uht,90.0,0.0,0.0,0
+54,Huevo blanco 12 pzas,eggs,0.0,28.0,0.0,1
+55,Atún en aceite 140 g,canned-fish,1095.0,0.0,0.0,0
+56,Queso fresco 250 g,cheese-fresh,0.0,10.0,0.0,1
+57,Café molido 500 g,coffee-ground,365.0,0.0,730.0,0
+58,Azúcar blanca 1 kg,sugar-white,1825.0,0.0,0.0,0
+59,Aceite vegetal 1 L,oil-vegetable,365.0,0.0,0.0,0
+60,Queso cheddar 200 g,cheese-hard,0.0,56.0,180.0,1
+61,Frijol pinto 1 kg,beans-dry,730.0,0.0,0.0,0
+62,Café molido 500 g,coffee-ground,365.0,0.0,730.0,0
+63,Queso panela 400 g,cheese-fresh,0.0,10.0,0.0,1
+64,Sardinas en salsa 155 g,canned-fish,1095.0,0.0,0.0,0
+65,Frijoles refritos 430 g,canned-beans,1095.0,3.0,60.0,1
+66,Jamón enlatado 200 g,canned-meat,1095.0,3.0,60.0,0
+67,Frijoles refritos 430 g,canned-beans,1095.0,3.0,60.0,1
+68,Jugo de naranja 1 L,juice-box,270.0,10.0,60.0,0
+69,Jitomate saladet fresco,fresh-tomato,5.0,7.0,180.0,1
+70,Frijol pinto 1 kg,beans-dry,730.0,0.0,0.0,0
+71,Papas fritas clásicas 170 g,chips,150.0,0.0,0.0,0
+72,Arroz blanco 500 g,rice-white-dry,730.0,0.0,0.0,0
+73,Jitomate bola fresco,fresh-tomato,5.0,7.0,180.0,1
+74,Frijol pinto 1 kg,beans-dry,730.0,0.0,0.0,0
+75,Chuleta de cerdo 1 kg,pork-fresh,0.0,4.0,270.0,1
+76,Agua purificada 1.5 L,bottled-water,720.0,0.0,0.0,0
+77,Sal yodada 1 kg,salt,3650.0,0.0,0.0,0
+78,Agua purificada 1.5 L,bottled-water,720.0,0.0,0.0,0
+79,Queso panela 400 g,cheese-fresh,0.0,10.0,0.0,1
+80,Queso cottage 200 g,cheese-fresh,0.0,10.0,0.0,1
+81,Papas fritas clásicas 170 g,chips,150.0,0.0,0.0,0
+82,Aguacate Hass,avocado,5.0,7.0,120.0,1
+83,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+84,Jitomate bola fresco,fresh-tomato,5.0,7.0,180.0,1
+85,Atún en agua 140 g,canned-fish,1095.0,0.0,0.0,0
+86,Café molido 250 g,coffee-ground,365.0,0.0,730.0,0
+87,Tortillas de maíz 1 kg,tortillas-corn,3.0,7.0,60.0,1
+88,Pasta espagueti 500 g,pasta-dry,730.0,0.0,0.0,0
+89,Puré de tomate 210 g,canned-tomato,720.0,5.0,60.0,0
+90,Jitomate saladet fresco,fresh-tomato,5.0,7.0,180.0,1
+91,Arroz blanco 500 g,rice-white-dry,730.0,0.0,0.0,0
+92,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+93,Café molido 250 g,coffee-ground,365.0,0.0,730.0,0
+94,Jitomate saladet fresco,fresh-tomato,5.0,7.0,180.0,1
+95,Jamón enlatado 200 g,canned-meat,1095.0,3.0,60.0,0
+96,Carne deshebrada enlatada 300 g,canned-meat,1095.0,3.0,60.0,0
+97,Huevo orgánico 18 pzas,eggs,0.0,28.0,0.0,1
+98,Atún en agua 140 g,canned-fish,1095.0,0.0,0.0,0
+99,Jugo de naranja 1 L,juice-box,270.0,10.0,60.0,0
+100,Leche semidescremada UHT 1L,milk-uht,90.0,0.0,0.0,0
+101,Pasta dental 75 ml,toothpaste,0.0,0.0,0.0,0
+102,Salsa verde 210 g,salsa-jarred,540.0,30.0,120.0,0
+103,Queso gouda 300 g,cheese-hard,0.0,56.0,180.0,1
+104,Yoghurt griego 150 g,yogurt,0.0,14.0,0.0,1
+105,Salsa verde 210 g,salsa-jarred,540.0,30.0,120.0,0
+106,Yoghurt natural 125 g,yogurt,0.0,14.0,0.0,1
+107,Galletas Marías 170 g,cookies,365.0,0.0,0.0,0
+108,Café molido 250 g,coffee-ground,365.0,0.0,730.0,0
+109,Shampoo restauración 400 ml,shampoo,0.0,0.0,0.0,0
+110,Totopos 200 g,chips,150.0,0.0,0.0,0
+111,Leche descremada UHT 1L,milk-uht,90.0,0.0,0.0,0
+112,Brócoli congelado 500 g,frozen-vegetables,0.0,0.0,365.0,1
+113,Bistec de res 1 kg,beef-fresh,0.0,4.0,365.0,1
+114,Papas fritas clásicas 170 g,chips,150.0,0.0,0.0,0
+115,Huevo orgánico 18 pzas,eggs,0.0,28.0,0.0,1
+116,Pan de caja blanco 680 g,bread-packaged,7.0,14.0,60.0,1
+117,Leche descremada UHT 1L,milk-uht,90.0,0.0,0.0,0
+118,Tortillas de maíz 500 g,tortillas-corn,3.0,7.0,60.0,1
+119,Tortillas de harina 1 kg,tortillas-flour,5.0,7.0,60.0,1
+120,Aguacate criollo,avocado,5.0,7.0,120.0,1
+121,Chuleta de cerdo 1 kg,pork-fresh,0.0,4.0,270.0,1
+122,Queso cheddar 200 g,cheese-hard,0.0,56.0,180.0,1
+123,Azúcar estándar 2 kg,sugar-white,1825.0,0.0,0.0,0
+124,Refresco cola 600 ml,soft-drinks,270.0,270.0,0.0,0
+125,Arroz blanco 500 g,rice-white-dry,730.0,0.0,0.0,0
+126,Yoghurt natural 125 g,yogurt,0.0,14.0,0.0,1
+127,Tomate triturado 400 g,canned-tomato,720.0,5.0,60.0,0
+128,Frijoles enteros 560 g,canned-beans,1095.0,3.0,60.0,1
+129,Café molido 250 g,coffee-ground,365.0,0.0,730.0,0
+130,Cereal de avena 450 g,cereal-box,365.0,0.0,0.0,0
+131,Frijol pinto 1 kg,beans-dry,730.0,0.0,0.0,0
+132,Chuleta de cerdo 1 kg,pork-fresh,0.0,4.0,270.0,1
+133,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+134,Salsa roja 210 g,salsa-jarred,540.0,30.0,120.0,0
+135,Pan multigrano 680 g,bread-packaged,7.0,14.0,60.0,1
+136,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+137,Frijoles enteros 560 g,canned-beans,1095.0,3.0,60.0,1
+138,Aceite vegetal 1 L,oil-vegetable,365.0,0.0,0.0,0
+139,Pan de caja blanco 680 g,bread-packaged,7.0,14.0,60.0,1
+140,Brócoli congelado 500 g,frozen-vegetables,0.0,0.0,365.0,1
+141,Huevo blanco 12 pzas,eggs,0.0,28.0,0.0,1
+142,Leche descremada UHT 1L,milk-uht,90.0,0.0,0.0,0
+143,Refresco limón 600 ml,soft-drinks,270.0,270.0,0.0,0
+144,Frijol negro 1 kg,beans-dry,730.0,0.0,0.0,0
+145,Cereal de maíz 500 g,cereal-box,365.0,0.0,0.0,0
+146,Café molido 500 g,coffee-ground,365.0,0.0,730.0,0
+147,Aceite vegetal 1 L,oil-vegetable,365.0,0.0,0.0,0
+148,Verduras mixtas congeladas 1 kg,frozen-vegetables,0.0,0.0,365.0,1
+149,Salsa roja 210 g,salsa-jarred,540.0,30.0,120.0,0
+150,Muslo de pollo 1 kg,chicken-fresh,0.0,2.0,270.0,1
+151,Aguacate criollo,avocado,5.0,7.0,120.0,1
+152,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+153,Sal fina 750 g,salt,3650.0,0.0,0.0,0
+154,Carne deshebrada enlatada 300 g,canned-meat,1095.0,3.0,60.0,0
+155,Sal yodada 1 kg,salt,3650.0,0.0,0.0,0
+156,Carne deshebrada enlatada 300 g,canned-meat,1095.0,3.0,60.0,0
+157,Atún en aceite 140 g,canned-fish,1095.0,0.0,0.0,0
+158,Galletas Marías 170 g,cookies,365.0,0.0,0.0,0
+159,Diezmillo de res 1 kg,beef-fresh,0.0,4.0,365.0,1
+160,Té verde 25 sobres,tea-bags,730.0,0.0,0.0,0
+161,Frijol negro 1 kg,beans-dry,730.0,0.0,0.0,0
+162,Queso fresco 250 g,cheese-fresh,0.0,10.0,0.0,1
+163,Galletas de chocolate 110 g,cookies,365.0,0.0,0.0,0
+164,Pasta fusilli 500 g,pasta-dry,730.0,0.0,0.0,0
+165,Sal yodada 1 kg,salt,3650.0,0.0,0.0,0
+166,Cereal de avena 450 g,cereal-box,365.0,0.0,0.0,0
+167,Cereal de avena 450 g,cereal-box,365.0,0.0,0.0,0
+168,Café molido 500 g,coffee-ground,365.0,0.0,730.0,0
+169,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+170,Galletas Marías 170 g,cookies,365.0,0.0,0.0,0
+171,Néctar de durazno 1 L,juice-box,270.0,10.0,60.0,0
+172,Lomo de cerdo 1 kg,pork-fresh,0.0,4.0,270.0,1
+173,Tortillas de maíz 500 g,tortillas-corn,3.0,7.0,60.0,1
+174,Tortillas de maíz 500 g,tortillas-corn,3.0,7.0,60.0,1
+175,Sal fina 750 g,salt,3650.0,0.0,0.0,0
+176,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+177,Sal fina 750 g,salt,3650.0,0.0,0.0,0
+178,Huevo blanco 12 pzas,eggs,0.0,28.0,0.0,1
+179,Sal yodada 1 kg,salt,3650.0,0.0,0.0,0
+180,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+181,Pechuga de pollo fresca 1 kg,chicken-fresh,0.0,2.0,270.0,1
+182,Pasta fusilli 500 g,pasta-dry,730.0,0.0,0.0,0
+183,Diezmillo de res 1 kg,beef-fresh,0.0,4.0,365.0,1
+184,Detergente líquido 1 L,household-detergent,0.0,0.0,0.0,0
+185,Jitomate bola fresco,fresh-tomato,5.0,7.0,180.0,1
+186,Aguacate Hass,avocado,5.0,7.0,120.0,1
+187,Agua purificada 1.5 L,bottled-water,720.0,0.0,0.0,0
+188,Queso gouda 300 g,cheese-hard,0.0,56.0,180.0,1
+189,Refresco cola 600 ml,soft-drinks,270.0,270.0,0.0,0
+190,Tortillas de harina 1 kg,tortillas-flour,5.0,7.0,60.0,1
+191,Queso panela 400 g,cheese-fresh,0.0,10.0,0.0,1
+192,Helado vainilla 1 L,ice-cream,0.0,0.0,90.0,1
+193,Frijoles enteros 560 g,canned-beans,1095.0,3.0,60.0,1
+194,Té negro 20 sobres,tea-bags,730.0,0.0,0.0,0
+195,Azúcar estándar 2 kg,sugar-white,1825.0,0.0,0.0,0
+196,Pasta fusilli 500 g,pasta-dry,730.0,0.0,0.0,0
+197,Totopos 200 g,chips,150.0,0.0,0.0,0
+198,Galletas de chocolate 110 g,cookies,365.0,0.0,0.0,0
+199,Agua mineral 600 ml,bottled-water,720.0,0.0,0.0,0
