@@ -1,0 +1,51 @@
+,nombre,tipo,temporada_pico,todo_el_anio,temporada_pico_inicio,temporada_pico_fin
+0,Aguacate,fruits-vegetables,Dic-May (alta); disponible todo el año,True,12.0,5.0
+1,Ciruela,fruits-vegetables,Jul–Ago,False,7.0,8.0
+2,Durazno,fruits-vegetables,Jul–Sep,False,7.0,9.0
+3,Fresa,fruits-vegetables,May-Jun,False,5.0,6.0
+4,Granada roja,fruits-vegetables,Sep–Oct,False,9.0,10.0
+5,Guayaba,fruits-vegetables,Sep-Dic,False,9.0,12.0
+6,Higo,fruits-vegetables,Jul–Oct,False,7.0,10.0
+7,Lima,fruits-vegetables,Nov–Abr,False,11.0,4.0
+8,Limón,fruits-vegetables,Todo el año (picos Oct-Dic),True,,12.0
+9,Mamey,fruits-vegetables,Abr–Jun,False,4.0,6.0
+10,Mandarina,fruits-vegetables,Nov-Mar,False,11.0,3.0
+11,Mango,fruits-vegetables,Abr–Ago,False,4.0,8.0
+12,Manzana,fruits-vegetables,Ago-Oct,False,8.0,10.0
+13,Melón,fruits-vegetables,Jun-Ago,False,6.0,8.0
+14,Naranja,fruits-vegetables,Nov–Abr,False,11.0,4.0
+15,Papaya,fruits-vegetables,Todo el año,True,,
+16,Pera,fruits-vegetables,Ago-Oct,False,8.0,10.0
+17,Piña,fruits-vegetables,Todo el año,True,,
+18,Plátano,fruits-vegetables,Todo el año,True,,
+19,Sandía,fruits-vegetables,Mar-may,False,3.0,5.0
+20,Tamarindo,fruits-vegetables,Ene–Abr,False,1.0,4.0
+21,Tejocote,fruits-vegetables,Oct–Dic,False,10.0,12.0
+22,Toronja (pomelo),fruits-vegetables,Nov–Abr,False,11.0,4.0
+23,Tuna,fruits-vegetables,Jul–Sep,False,7.0,9.0
+24,Uva,fruits-vegetables,Jun–Dic,False,6.0,12.0
+25,Zapote negro,fruits-vegetables,Ago–Ene,False,8.0,1.0
+26,Acelga,fruits-vegetables,Todo el año,True,,
+27,Ajo,fruits-vegetables,Todo el año,True,,
+28,Berenjena,fruits-vegetables,Ene–May,False,1.0,5.0
+29,Berro,fruits-vegetables,Jun–Jul,False,6.0,7.0
+30,Betabel,fruits-vegetables,Todo el año,True,,
+31,Calabacita,fruits-vegetables,Todo el año,True,,
+32,Cebolla,fruits-vegetables,Todo el año,True,,
+33,Chayote,fruits-vegetables,Abr–Oct,False,4.0,10.0
+34,Chile poblano,fruits-vegetables,Ago–Oct,False,8.0,10.0
+35,Chile verde (jalapeño/serrano),fruits-vegetables,Ene–Oct,False,1.0,10.0
+36,Chícharo,fruits-vegetables,Abr-Jun,False,4.0,6.0
+37,Col (repollo),fruits-vegetables,Todo el año (pico Oct–Abr),True,,4.0
+38,Coliflor,fruits-vegetables,Oct–May,False,10.0,5.0
+39,Ejote,fruits-vegetables,Feb–Nov,False,2.0,11.0
+40,Elote (maíz tierno),fruits-vegetables,Mar–Nov,False,3.0,11.0
+41,Espinaca,fruits-vegetables,Todo el año,True,,
+42,Jitomate (tomate rojo),fruits-vegetables,Todo el año,True,,
+43,Lechuga,fruits-vegetables,Todo el año,True,,
+44,Nopal,fruits-vegetables,Mar–May,False,3.0,5.0
+45,Papa,fruits-vegetables,Todo el año,True,,
+46,Pepino,fruits-vegetables,Todo el año,True,,
+47,Tomate verde (tomatillo),fruits-vegetables,Todo el año,True,,
+48,Verdolaga,fruits-vegetables,Abr-Oct,False,4.0,10.0
+49,Zanahoria,fruits-vegetables,Todo el año,True,,
