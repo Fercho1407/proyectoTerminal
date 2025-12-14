@@ -17,7 +17,6 @@ viewMount.id = "app";
 main.appendChild(topbarMount);
 main.appendChild(viewMount);
 
-// placeholder para sidebar (lo reemplaza el router)
 app.appendChild(document.createElement("div"));
 app.appendChild(main);
 root.appendChild(app);
