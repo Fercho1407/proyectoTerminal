@@ -1,2 +1,4 @@
 #Ignorar la carpeta de dependencias
 dependenciasPT/
+__pycache__/
+*.pyc
