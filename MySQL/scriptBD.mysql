@@ -1,0 +1,78 @@
+CREATE TABLE products (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  sku VARCHAR(64) NULL UNIQUE,
+  name VARCHAR(255) NOT NULL,
+  product_key VARCHAR(255) NOT NULL UNIQUE,
+  category VARCHAR(120) NULL,
+  unit ENUM('pieza','kg','g','litro','ml','caja','paquete') NOT NULL DEFAULT 'pieza',
+  is_perishable BOOLEAN NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE sales (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  sold_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  total DECIMAL(12,2) NOT NULL DEFAULT 0,
+  payment_method VARCHAR(40) NULL,
+  notes VARCHAR(255) NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE sale_items (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  sale_id BIGINT UNSIGNED NOT NULL,
+  product_id BIGINT UNSIGNED NOT NULL,
+  qty DECIMAL(12,3) NOT NULL,
+  unit_price DECIMAL(12,2) NOT NULL,
+  subtotal DECIMAL(12,2) NOT NULL,
+  CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES sales(id),
+  CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES products(id),
+  INDEX idx_sale_items_sale (sale_id),
+  INDEX idx_sale_items_product (product_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE inventory_movements (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  product_id BIGINT UNSIGNED NOT NULL,
+  type ENUM('IN','OUT','ADJUST') NOT NULL,
+  qty DECIMAL(12,3) NOT NULL,
+  unit_cost DECIMAL(12,2) NULL,
+  reason VARCHAR(255) NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_inv_mov_product FOREIGN KEY (product_id) REFERENCES products(id),
+  INDEX idx_inv_mov_product_date (product_id, created_at),
+  INDEX idx_inv_mov_type (type)
+) ENGINE=InnoDB;
+
+CREATE TABLE events (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  date DATE NOT NULL,
+  type ENUM('holiday','season','promo','custom') NOT NULL DEFAULT 'custom',
+  weight INT NOT NULL DEFAULT 1,
+  UNIQUE KEY uq_event (name, date),
+  INDEX idx_events_date (date)
+) ENGINE=InnoDB;
+
+CREATE TABLE event_products (
+  event_id BIGINT UNSIGNED NOT NULL,
+  product_id BIGINT UNSIGNED NOT NULL,
+  PRIMARY KEY (event_id, product_id),
+  CONSTRAINT fk_ep_event FOREIGN KEY (event_id) REFERENCES events(id),
+  CONSTRAINT fk_ep_product FOREIGN KEY (product_id) REFERENCES products(id)
+) ENGINE=InnoDB;
+
+CREATE VIEW v_stock_actual AS
+SELECT
+  p.id AS product_id,
+  p.name,
+  COALESCE(SUM(
+    CASE
+      WHEN im.type IN ('IN','ADJUST') THEN im.qty
+      WHEN im.type = 'OUT' THEN -im.qty
+      ELSE 0
+    END
+  ), 0) AS stock_actual
+FROM products p
+LEFT JOIN inventory_movements im ON im.product_id = p.id
+GROUP BY p.id, p.name;
