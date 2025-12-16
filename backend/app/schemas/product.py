@@ -12,4 +12,12 @@ class ProductOut(ProductCreate):
     perecedero: int  
 
     class Config:
-        from_attributes = True  
+        from_attributes = True
+        
+class ProductUpdate(BaseModel):
+    product_name: str
+    category_off: str
+    shelf_life_pantry_days: int = 0
+    shelf_life_fridge_days: int = 0
+    shelf_life_freezer_days: int = 0
+

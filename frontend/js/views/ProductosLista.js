@@ -28,12 +28,14 @@ export function ProductosListaView() {
             <th>Producto</th>
             <th>Categoría</th>
             <th>Perecedero</th>
+            <th style="width: 220px;">Acciones</th>
           </tr>
         </thead>
         <tbody id="productsBody"></tbody>
       </table>
     </div>
 
+    <!-- Modal Edición -->
     <div class="modal-backdrop hidden" id="modalBackdrop">
       <div class="modal">
         <div class="modal-header">
@@ -41,13 +43,46 @@ export function ProductosListaView() {
           <button class="btn secondary" type="button" id="btnCloseModal">✖</button>
         </div>
 
-        <div class="card soft" style="margin-top:12px;">
-          <p class="muted">Edición pendiente: primero implementamos PUT/PATCH y campos extra (stock/precio).</p>
-          <pre class="code" id="editJson">{}</pre>
-        </div>
+        <form class="form" id="editForm" style="margin-top:10px;">
+          <input type="hidden" name="id" />
 
-        <div class="actions" style="margin-top:12px;">
-          <button class="btn secondary" type="button" id="btnCancel">Cerrar</button>
+          <div class="field full">
+            <label>Nombre</label>
+            <input type="text" name="product_name" required />
+          </div>
+
+          <div class="field full">
+            <label>Categoría (OpenFoodFacts)</label>
+            <input type="text" name="category_off" required />
+          </div>
+
+          <div class="field">
+            <label>Vida útil despensa (días)</label>
+            <input type="number" name="shelf_life_pantry_days" min="0" value="0" required />
+          </div>
+
+          <div class="field">
+            <label>Vida útil refrigerador (días)</label>
+            <input type="number" name="shelf_life_fridge_days" min="0" value="0" required />
+          </div>
+
+          <div class="field">
+            <label>Vida útil congelador (días)</label>
+            <input type="number" name="shelf_life_freezer_days" min="0" value="0" required />
+          </div>
+
+          <div class="field full">
+            <div class="actions">
+              <button class="btn secondary" type="button" id="btnCancel">Cancelar</button>
+              <button class="btn" type="submit" id="btnSaveEdit">Guardar cambios</button>
+            </div>
+            <p class="muted" id="editStatus" style="margin-top:10px;"></p>
+          </div>
+        </form>
+
+        <div class="card soft" style="margin-top:12px;">
+          <h3>Payload (PUT /products/{id})</h3>
+          <pre class="code" id="editJson">{}</pre>
         </div>
       </div>
     </div>
@@ -62,23 +97,29 @@ export function ProductosListaView() {
 
   const API_URL = "http://127.0.0.1:8000";
 
-  let products = []; // ahora vienen del backend
+  let products = [];
 
   const tbody = el.querySelector("#productsBody");
   const q = el.querySelector("#q");
   const btnReload = el.querySelector("#btnReload");
   const status = el.querySelector("#status");
 
+  // Modal edición
+  const backdrop = el.querySelector("#modalBackdrop");
+  const btnClose = el.querySelector("#btnCloseModal");
+  const btnCancel = el.querySelector("#btnCancel");
+  const editForm = el.querySelector("#editForm");
+  const editJson = el.querySelector("#editJson");
+  const editStatus = el.querySelector("#editStatus");
+  const btnSaveEdit = el.querySelector("#btnSaveEdit");
+
   function normalizeFromApi(p) {
-    // Adaptamos el JSON del backend al formato que renderiza la tabla
     return {
       id: p.id,
       product_name: p.product_name,
-      category: p.category_off,                 // backend -> frontend
-      perishable: Number(p.perecedero) === 1,   // 0/1 -> boolean
-      stock: null,                              // aún no existe en BD
-      base_price: null,                         // aún no existe en BD
-      _raw: p,                                  // por si quieres ver el original
+      category: p.category_off,
+      perishable: Number(p.perecedero) === 1,
+      _raw: p,
     };
   }
 
@@ -94,12 +135,9 @@ export function ProductosListaView() {
               ? '<span class="tag warn">Sí</span>'
               : '<span class="tag">No</span>'
           }</td>
-          <td>${p.stock == null ? "—" : Number(p.stock)}</td>
-          <td>${p.base_price == null ? "—" : `$${Number(p.base_price).toFixed(2)}`}</td>
           <td>
             <button class="btn secondary" type="button" data-action="view" data-id="${p.id}">Ver</button>
             <button class="btn secondary" type="button" data-action="edit" data-id="${p.id}">Editar</button>
-            <button class="btn secondary" type="button" data-action="delete" data-id="${p.id}">Eliminar</button>
           </td>
         </tr>
       `
@@ -107,7 +145,7 @@ export function ProductosListaView() {
       .join("");
 
     if (!rows.length) {
-      tbody.innerHTML = `<tr><td colspan="6" class="muted">Sin resultados.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="4" class="muted">Sin resultados.</td></tr>`;
     }
   }
 
@@ -158,16 +196,22 @@ export function ProductosListaView() {
   q.addEventListener("input", applyFilter);
   btnReload.addEventListener("click", fetchProducts);
 
-  // Modal placeholder
-  const backdrop = el.querySelector("#modalBackdrop");
-  const btnClose = el.querySelector("#btnCloseModal");
-  const btnCancel = el.querySelector("#btnCancel");
-  const editJson = el.querySelector("#editJson");
-
+  // ===== Modal helpers =====
   function openModal(product) {
     backdrop.classList.remove("hidden");
-    editJson.textContent = JSON.stringify(product._raw, null, 2);
+
+    // cargar valores desde la respuesta RAW del backend
+    editForm.id.value = product.id;
+    editForm.product_name.value = product._raw.product_name ?? "";
+    editForm.category_off.value = product._raw.category_off ?? "";
+    editForm.shelf_life_pantry_days.value = product._raw.shelf_life_pantry_days ?? 0;
+    editForm.shelf_life_fridge_days.value = product._raw.shelf_life_fridge_days ?? 0;
+    editForm.shelf_life_freezer_days.value = product._raw.shelf_life_freezer_days ?? 0;
+
+    editStatus.textContent = "";
+    updateEditPreview();
   }
+
   function closeModal() {
     backdrop.classList.add("hidden");
   }
@@ -176,6 +220,76 @@ export function ProductosListaView() {
   btnCancel.addEventListener("click", closeModal);
   backdrop.addEventListener("click", (e) => {
     if (e.target === backdrop) closeModal();
+  });
+
+  function buildPutPayload() {
+    return {
+      product_name: editForm.product_name.value.trim(),
+      category_off: editForm.category_off.value.trim(),
+      shelf_life_pantry_days: Number(editForm.shelf_life_pantry_days.value || 0),
+      shelf_life_fridge_days: Number(editForm.shelf_life_fridge_days.value || 0),
+      shelf_life_freezer_days: Number(editForm.shelf_life_freezer_days.value || 0),
+    };
+  }
+
+  function updateEditPreview() {
+    editJson.textContent = JSON.stringify(buildPutPayload(), null, 2);
+  }
+
+  editForm.addEventListener("input", updateEditPreview);
+
+  function setEditLoading(on) {
+    btnSaveEdit.disabled = on;
+    btnSaveEdit.textContent = on ? "Guardando..." : "Guardar cambios";
+  }
+
+  async function putProduct(id, payload) {
+    const res = await fetch(`${API_URL}/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json().catch(() => null);
+
+    if (!res.ok) {
+      const detail = data?.detail;
+      const msg =
+        typeof detail === "string"
+          ? detail
+          : Array.isArray(detail)
+            ? detail.map((d) => d?.msg).filter(Boolean).join(" | ")
+            : `Error HTTP ${res.status}`;
+      throw new Error(msg);
+    }
+
+    return data;
+  }
+
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = Number(editForm.id.value);
+    const payload = buildPutPayload();
+
+    try {
+      setEditLoading(true);
+      editStatus.textContent = "Guardando en backend...";
+
+      const updated = await putProduct(id, payload);
+
+      // actualizar en memoria y re-render
+      products = products.map((p) => (p.id === id ? normalizeFromApi(updated) : p));
+      applyFilter();
+
+      editStatus.textContent = `✅ Actualizado. perecedero=${updated.perecedero}`;
+      setTimeout(closeModal, 250);
+    } catch (err) {
+      editStatus.textContent = `❌ ${err.message}`;
+      console.error(err);
+    } finally {
+      setEditLoading(false);
+    }
   });
 
   // Acciones tabla
@@ -194,16 +308,11 @@ export function ProductosListaView() {
     }
 
     if (action === "edit") {
-      // placeholder hasta tener PUT/PATCH
       openModal(product);
-    }
-
-    if (action === "delete") {
-      alert("Eliminar (placeholder): primero implementamos DELETE /products/{id}");
     }
   });
 
-  // Inicial: traer del backend
+  // Inicial
   fetchProducts();
 
   return el;
