@@ -44,3 +44,12 @@ def actualizar_producto(db: Session, product_id: int, payload: dict) -> Product:
     db.commit()
     db.refresh(producto)
     return producto
+
+def eliminar_producto(db: Session, product_id: int) -> Product:
+    producto = db.query(Product).filter(Product.id == product_id).first()
+    if not producto:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+    db.delete(producto)
+    db.commit()
+    

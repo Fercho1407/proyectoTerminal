@@ -10,8 +10,8 @@ export function ProductosListaView() {
           <p class="muted" id="status">Cargando...</p>
         </div>
         <div class="view-header-actions">
-          <button class="btn" type="button" data-go="productos-nuevo">➕ Nuevo producto</button>
-          <button class="btn secondary" type="button" id="btnReload">🔄 Recargar</button>
+          <button class="btn" type="button" data-go="productos-nuevo">Nuevo producto</button>
+          <button class="btn secondary" type="button" id="btnReload">Recargar</button>
         </div>
       </div>
 
@@ -28,7 +28,7 @@ export function ProductosListaView() {
             <th>Producto</th>
             <th>Categoría</th>
             <th>Perecedero</th>
-            <th style="width: 220px;">Acciones</th>
+            <th style="width:220px;">Acciones</th>
           </tr>
         </thead>
         <tbody id="productsBody"></tbody>
@@ -58,17 +58,17 @@ export function ProductosListaView() {
 
           <div class="field">
             <label>Vida útil despensa (días)</label>
-            <input type="number" name="shelf_life_pantry_days" min="0" value="0" required />
+            <input type="number" name="shelf_life_pantry_days" min="0" required />
           </div>
 
           <div class="field">
             <label>Vida útil refrigerador (días)</label>
-            <input type="number" name="shelf_life_fridge_days" min="0" value="0" required />
+            <input type="number" name="shelf_life_fridge_days" min="0" required />
           </div>
 
           <div class="field">
             <label>Vida útil congelador (días)</label>
-            <input type="number" name="shelf_life_freezer_days" min="0" value="0" required />
+            <input type="number" name="shelf_life_freezer_days" min="0" required />
           </div>
 
           <div class="field full">
@@ -88,11 +88,10 @@ export function ProductosListaView() {
     </div>
   `;
 
-  // Navegación interna
+  // Navegación
   el.addEventListener("click", (e) => {
     const go = e.target.closest("[data-go]");
-    if (!go) return;
-    window.location.hash = `#/${go.dataset.go}`;
+    if (go) window.location.hash = `#/${go.dataset.go}`;
   });
 
   const API_URL = "http://127.0.0.1:8000";
@@ -104,15 +103,7 @@ export function ProductosListaView() {
   const btnReload = el.querySelector("#btnReload");
   const status = el.querySelector("#status");
 
-  // Modal edición
-  const backdrop = el.querySelector("#modalBackdrop");
-  const btnClose = el.querySelector("#btnCloseModal");
-  const btnCancel = el.querySelector("#btnCancel");
-  const editForm = el.querySelector("#editForm");
-  const editJson = el.querySelector("#editJson");
-  const editStatus = el.querySelector("#editStatus");
-  const btnSaveEdit = el.querySelector("#btnSaveEdit");
-
+  // ===== Helpers =====
   function normalizeFromApi(p) {
     return {
       id: p.id,
@@ -124,43 +115,34 @@ export function ProductosListaView() {
   }
 
   function renderRows(rows) {
-    tbody.innerHTML = rows
-      .map(
-        (p) => `
+    tbody.innerHTML = rows.length
+      ? rows.map(p => `
         <tr>
           <td>${escapeHtml(p.product_name)}</td>
-          <td>${escapeHtml(p.category || "—")}</td>
-          <td>${
-            p.perishable
-              ? '<span class="tag warn">Sí</span>'
-              : '<span class="tag">No</span>'
-          }</td>
+          <td>${escapeHtml(p.category)}</td>
+          <td>${p.perishable ? '<span class="tag warn">Sí</span>' : '<span class="tag">No</span>'}</td>
           <td>
-            <button class="btn secondary" type="button" data-action="view" data-id="${p.id}">Ver</button>
-            <button class="btn secondary" type="button" data-action="edit" data-id="${p.id}">Editar</button>
+            <button class="btn secondary" data-action="view" data-id="${p.id}">Ver</button>
+            <button class="btn secondary" data-action="edit" data-id="${p.id}">Editar</button>
+            <button class="btn secondary danger" data-action="delete" data-id="${p.id}">Eliminar</button>
           </td>
         </tr>
-      `
-      )
-      .join("");
-
-    if (!rows.length) {
-      tbody.innerHTML = `<tr><td colspan="4" class="muted">Sin resultados.</td></tr>`;
-    }
+      `).join("")
+      : `<tr><td colspan="4" class="muted">Sin resultados.</td></tr>`;
   }
 
   function applyFilter() {
-    const term = (q.value || "").trim().toLowerCase();
-    const filtered = !term
-      ? products
-      : products.filter(
-          (p) =>
-            (p.product_name || "").toLowerCase().includes(term) ||
-            (p.category || "").toLowerCase().includes(term)
-        );
+    const term = q.value.toLowerCase().trim();
+    const filtered = term
+      ? products.filter(p =>
+          (p.product_name || "").toLowerCase().includes(term) ||
+          (p.category || "").toLowerCase().includes(term)
+        )
+      : products;
     renderRows(filtered);
   }
 
+  // ===== API =====
   async function fetchProducts() {
     status.textContent = "Cargando productos...";
     btnReload.disabled = true;
@@ -168,23 +150,13 @@ export function ProductosListaView() {
     try {
       const res = await fetch(`${API_URL}/products`);
       const data = await res.json().catch(() => null);
-
-      if (!res.ok) {
-        const detail = data?.detail;
-        const msg =
-          typeof detail === "string"
-            ? detail
-            : Array.isArray(detail)
-              ? detail.map((d) => d?.msg).filter(Boolean).join(" | ")
-              : `Error HTTP ${res.status}`;
-        throw new Error(msg);
-      }
+      if (!res.ok) throw new Error(data?.detail || "Error al cargar productos");
 
       products = Array.isArray(data) ? data.map(normalizeFromApi) : [];
       status.textContent = `Listo: ${products.length} producto(s).`;
       applyFilter();
     } catch (err) {
-      status.textContent = `❌ ${err.message}`;
+      status.textContent = `${err.message}`;
       console.error(err);
       products = [];
       applyFilter();
@@ -193,20 +165,46 @@ export function ProductosListaView() {
     }
   }
 
-  q.addEventListener("input", applyFilter);
-  btnReload.addEventListener("click", fetchProducts);
+  async function putProduct(id, payload) {
+    const res = await fetch(`${API_URL}/products/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
 
-  // ===== Modal helpers =====
-  function openModal(product) {
+    const data = await res.json().catch(() => null);
+    if (!res.ok) throw new Error(data?.detail || "Error al actualizar");
+    return data;
+  }
+
+  async function deleteProduct(id) {
+    const res = await fetch(`${API_URL}/products/${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      throw new Error(data?.detail || "Error al eliminar");
+    }
+  }
+
+  // ===== Modal =====
+  const backdrop = el.querySelector("#modalBackdrop");
+  const editForm = el.querySelector("#editForm");
+  const editJson = el.querySelector("#editJson");
+  const editStatus = el.querySelector("#editStatus");
+  const btnClose = el.querySelector("#btnCloseModal");
+  const btnCancel = el.querySelector("#btnCancel");
+  const btnSaveEdit = el.querySelector("#btnSaveEdit");
+
+  const $ = (name) => editForm.elements[name];
+
+  function openModal(p) {
     backdrop.classList.remove("hidden");
 
-    // cargar valores desde la respuesta RAW del backend
-    editForm.id.value = product.id;
-    editForm.product_name.value = product._raw.product_name ?? "";
-    editForm.category_off.value = product._raw.category_off ?? "";
-    editForm.shelf_life_pantry_days.value = product._raw.shelf_life_pantry_days ?? 0;
-    editForm.shelf_life_fridge_days.value = product._raw.shelf_life_fridge_days ?? 0;
-    editForm.shelf_life_freezer_days.value = product._raw.shelf_life_freezer_days ?? 0;
+    $("id").value = String(p.id);
+    $("product_name").value = p._raw.product_name ?? "";
+    $("category_off").value = p._raw.category_off ?? "";
+    $("shelf_life_pantry_days").value = p._raw.shelf_life_pantry_days ?? 0;
+    $("shelf_life_fridge_days").value = p._raw.shelf_life_fridge_days ?? 0;
+    $("shelf_life_freezer_days").value = p._raw.shelf_life_freezer_days ?? 0;
 
     editStatus.textContent = "";
     updateEditPreview();
@@ -216,19 +214,13 @@ export function ProductosListaView() {
     backdrop.classList.add("hidden");
   }
 
-  btnClose.addEventListener("click", closeModal);
-  btnCancel.addEventListener("click", closeModal);
-  backdrop.addEventListener("click", (e) => {
-    if (e.target === backdrop) closeModal();
-  });
-
   function buildPutPayload() {
     return {
-      product_name: editForm.product_name.value.trim(),
-      category_off: editForm.category_off.value.trim(),
-      shelf_life_pantry_days: Number(editForm.shelf_life_pantry_days.value || 0),
-      shelf_life_fridge_days: Number(editForm.shelf_life_fridge_days.value || 0),
-      shelf_life_freezer_days: Number(editForm.shelf_life_freezer_days.value || 0),
+      product_name: $("product_name").value.trim(),
+      category_off: $("category_off").value.trim(),
+      shelf_life_pantry_days: Number($("shelf_life_pantry_days").value || 0),
+      shelf_life_fridge_days: Number($("shelf_life_fridge_days").value || 0),
+      shelf_life_freezer_days: Number($("shelf_life_freezer_days").value || 0),
     };
   }
 
@@ -243,78 +235,85 @@ export function ProductosListaView() {
     btnSaveEdit.textContent = on ? "Guardando..." : "Guardar cambios";
   }
 
-  async function putProduct(id, payload) {
-    const res = await fetch(`${API_URL}/products/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json().catch(() => null);
-
-    if (!res.ok) {
-      const detail = data?.detail;
-      const msg =
-        typeof detail === "string"
-          ? detail
-          : Array.isArray(detail)
-            ? detail.map((d) => d?.msg).filter(Boolean).join(" | ")
-            : `Error HTTP ${res.status}`;
-      throw new Error(msg);
+  btnSaveEdit.addEventListener("click", (ev) => {
+    console.log("[UI] click Guardar cambios");
+    ev.preventDefault();
+    if (typeof editForm.requestSubmit === "function") {
+      editForm.requestSubmit();
+    } else {
+      editForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }));
     }
-
-    return data;
-  }
+  });
 
   editForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("[UI] submit editForm");
 
-    const id = Number(editForm.id.value);
+    const id = Number($("id").value);
     const payload = buildPutPayload();
+
+    console.log("[UI] id:", id);
+    console.log("[UI] payload:", payload);
 
     try {
       setEditLoading(true);
-      editStatus.textContent = "Guardando en backend...";
+      editStatus.textContent = "Guardando...";
 
       const updated = await putProduct(id, payload);
 
-      // actualizar en memoria y re-render
-      products = products.map((p) => (p.id === id ? normalizeFromApi(updated) : p));
+      products = products.map(p => (p.id === updated.id ? normalizeFromApi(updated) : p));
       applyFilter();
 
-      editStatus.textContent = `✅ Actualizado. perecedero=${updated.perecedero}`;
+      editStatus.textContent = "Actualizado";
       setTimeout(closeModal, 250);
     } catch (err) {
-      editStatus.textContent = `❌ ${err.message}`;
       console.error(err);
+      editStatus.textContent = `${err.message}`;
     } finally {
       setEditLoading(false);
     }
   });
 
-  // Acciones tabla
-  tbody.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-action]");
+  btnClose.onclick = btnCancel.onclick = closeModal;
+  backdrop.onclick = (e) => {
+    if (e.target === backdrop) closeModal();
+  };
+
+  // ===== Acciones tabla =====
+  tbody.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-action]");
     if (!btn) return;
 
     const id = Number(btn.dataset.id);
-    const product = products.find((p) => p.id === id);
-    if (!product) return;
+    const p = products.find(x => x.id === id);
+    if (!p) return;
 
-    const action = btn.dataset.action;
-
-    if (action === "view") {
-      alert(`Producto:\n\n${JSON.stringify(product._raw, null, 2)}`);
+    if (btn.dataset.action === "view") {
+      alert(JSON.stringify(p._raw, null, 2));
     }
 
-    if (action === "edit") {
-      openModal(product);
+    if (btn.dataset.action === "edit") {
+      openModal(p);
+    }
+
+    if (btn.dataset.action === "delete") {
+      if (!confirm("¿Eliminar producto?")) return;
+
+      try {
+        await deleteProduct(id);
+        products = products.filter(x => x.id !== id);
+        applyFilter();
+        alert("Producto eliminado");
+      } catch (err) {
+        alert(err.message);
+      }
     }
   });
 
-  // Inicial
-  fetchProducts();
+  q.addEventListener("input", applyFilter);
+  btnReload.addEventListener("click", fetchProducts);
 
+  fetchProducts();
   return el;
 }
 
