@@ -19,3 +19,7 @@ def crear_producto(db: Session, payload: dict) -> Product:
     db.commit()
     db.refresh(nuevo)
     return nuevo
+
+
+def listar_productos(db: Session) -> list[Product]:
+    return db.query(Product)

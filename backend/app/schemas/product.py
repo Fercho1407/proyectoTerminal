@@ -9,7 +9,7 @@ class ProductCreate(BaseModel):
 
 class ProductOut(ProductCreate):
     id: int
-    perecedero: int  # 1 o 0
+    perecedero: int  
 
     class Config:
-        from_attributes = True  # permite convertir desde SQLAlchemy
+        from_attributes = True  
