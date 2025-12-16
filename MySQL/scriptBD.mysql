@@ -12,9 +12,6 @@ CREATE TABLE products (
   shelf_life_freezer_days INT,
   perecedero BOOLEAN NOT NULL DEFAULT 0,
 
-  -- Unidad base del producto
-  unit_base ENUM('kg','piece','lt') NOT NULL DEFAULT 'piece',
-
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -23,7 +20,8 @@ CREATE TABLE sales (
   sold_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total DECIMAL(12,2) NOT NULL DEFAULT 0,
   payment_method VARCHAR(40) NULL,
-  notes VARCHAR(255) NULL
+  notes VARCHAR(255) NULL,
+  unit ENUM('kg','g','pieza','paquete','caja','lt','ml') NOT NULL DEFAULT 'pieza'
 );
 
 CREATE TABLE sale_items (
@@ -33,8 +31,7 @@ CREATE TABLE sale_items (
 
   qty DECIMAL(12,3) NOT NULL,
 
-  -- Unidad en la que se capturó la venta
-  unit ENUM('kg','g','piece','pack','box','lt','ml') NOT NULL DEFAULT 'piece',
+  unit ENUM('kg','g','pieza','paquete','caja','lt','ml') NOT NULL DEFAULT 'pieza',
 
   unit_price DECIMAL(12,2) NOT NULL,
   subtotal DECIMAL(12,2) NOT NULL,
@@ -82,11 +79,10 @@ CREATE TABLE event_products (
   CONSTRAINT fk_ep_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
-CREATE VIEW v_stock_actual AS
+CREATE OR REPLACE VIEW v_stock_actual AS
 SELECT
   p.id AS product_id,
   p.product_name,
-  p.unit_base,
   COALESCE(SUM(
     CASE
       WHEN im.type IN ('IN','ADJUST') THEN im.qty
@@ -96,4 +92,5 @@ SELECT
   ), 0) AS stock_actual
 FROM products p
 LEFT JOIN inventory_movements im ON im.product_id = p.id
-GROUP BY p.id, p.product_name, p.unit_base;
+GROUP BY p.id, p.product_name;
+
