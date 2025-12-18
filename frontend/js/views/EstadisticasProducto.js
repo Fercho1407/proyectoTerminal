@@ -6,25 +6,28 @@ export function EstadisticasProductoView() {
     <div class="card">
       <div class="view-header">
         <div>
-          <h3>Estadísticas por producto</h3>
-          <p class="muted">Placeholder. Luego conecta a GET /stats/producto?name=&range=&metric=</p>
+          <h3>Stats por producto</h3>
+          <p class="muted">Conecta a GET /stats/product</p>
         </div>
+
         <div class="view-header-actions">
           <button class="btn secondary" type="button" data-go="predicciones">🔮 Ir a predicciones</button>
           <button class="btn secondary" type="button" data-go="ventas-historial">🧾 Ver ventas</button>
+          <button class="btn secondary" type="button" id="btnReload">🔄 Sync</button>
         </div>
       </div>
 
-      <form class="form" id="statsForm">
+      <div class="form">
         <div class="field full">
-          <label>Producto</label>
-          <input type="text" name="product_name" placeholder="Ej. pasta espagueti 500 g" required />
+          <label>Producto (ID)</label>
+          <input type="number" id="productId" min="1" placeholder="Ej. 3" />
         </div>
 
         <div class="field">
           <label>Rango</label>
-          <select name="range">
-            <option value="30d">Últimos 30 días</option>
+          <select id="range">
+            <option value="7d">Últimos 7 días</option>
+            <option value="30d" selected>Últimos 30 días</option>
             <option value="90d">Últimos 90 días</option>
             <option value="365d">Último año</option>
           </select>
@@ -32,127 +35,377 @@ export function EstadisticasProductoView() {
 
         <div class="field">
           <label>Métrica principal</label>
-          <select name="metric">
-            <option value="sales">Ventas</option>
-            <option value="revenue">Ingresos</option>
-            <option value="error">Error predicción</option>
+          <select id="metric">
+            <option value="sales" selected>Ventas (qty)</option>
+            <option value="revenue">Ingresos (qty * precio)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Unidad</label>
+          <select id="unit">
+            <option value="piece" selected>piece</option>
+            <option value="kg">kg</option>
+            <option value="g">g</option>
+            <option value="pack">pack</option>
+            <option value="box">box</option>
+            <option value="lt">lt</option>
+            <option value="ml">ml</option>
           </select>
         </div>
 
         <div class="field full">
           <div class="actions">
-            <button class="btn secondary" type="reset" id="btnReset">Limpiar</button>
-            <button class="btn" type="submit">Ver estadísticas</button>
+            <button class="btn secondary" type="button" id="btnClear">Limpiar</button>
+            <button class="btn" type="button" id="btnRun">Ver estadísticas</button>
           </div>
+          <p class="muted" id="status" style="margin-top:10px;">Listo.</p>
         </div>
-      </form>
+      </div>
 
       <div class="card soft" style="margin-top:12px;">
-        <h3>Query (GET /stats/producto)</h3>
+        <h3>Query (GET /stats/product)</h3>
         <pre class="code" id="queryPreview">{}</pre>
       </div>
 
-      <div class="kpis" style="margin-top:12px;">
-        <div class="kpi">
-          <div class="label">MAE</div>
-          <div class="value" id="kpiMAE">—</div>
-        </div>
-        <div class="kpi">
-          <div class="label">MAPE</div>
-          <div class="value" id="kpiMAPE">—</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Prom. ventas/día</div>
-          <div class="value" id="kpiAvg">—</div>
-        </div>
-        <div class="kpi">
-          <div class="label">Volatilidad</div>
-          <div class="value" id="kpiVol">—</div>
-        </div>
+      <div class="grid" style="margin-top:12px; display:grid; grid-template-columns: repeat(4, 1fr); gap:12px;">
+        <div class="card soft"><div class="muted">Total</div><div style="font-size:18px;" id="kpiTotal">—</div></div>
+        <div class="card soft"><div class="muted">Prom. por día</div><div style="font-size:18px;" id="kpiAvg">—</div></div>
+        <div class="card soft"><div class="muted">Volatilidad</div><div style="font-size:18px;" id="kpiVol">—</div></div>
+        <div class="card soft"><div class="muted">Puntos</div><div style="font-size:18px;" id="kpiN">—</div></div>
       </div>
 
       <div class="card soft" style="margin-top:12px;">
-        <h3>Gráfica (placeholder)</h3>
-        <p class="muted">Luego: serie temporal (ventas/ingresos) o error vs tiempo.</p>
-        <div class="placeholder-box" style="height:240px;">Área de gráfica</div>
+        <h3>Serie temporal</h3>
+
+        <div id="chartWrap" style="position:relative;">
+          <div id="chart" style="height:320px; border:1px dashed rgba(255,255,255,.12); border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+            <span class="muted" id="chartEmpty">Área de gráfica</span>
+          </div>
+
+          <div id="tooltip"
+               class="card soft"
+               style="position:absolute; left:0; top:0; transform:translate(-9999px,-9999px); pointer-events:none; padding:8px 10px; border-radius:10px; font-size:12px; opacity:.98;">
+            <div class="muted" id="tipDate">—</div>
+            <div id="tipValue" style="font-weight:700;">—</div>
+          </div>
+        </div>
+
+        <div style="margin-top:12px; overflow:auto; max-height:220px;">
+          <table>
+            <thead>
+              <tr><th>Fecha</th><th>Valor</th></tr>
+            </thead>
+            <tbody id="seriesBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   `;
 
-  // Navegación interna
+  // navegación
   el.addEventListener("click", (e) => {
     const go = e.target.closest("[data-go]");
-    if (!go) return;
-    window.location.hash = `#/${go.dataset.go}`;
+    if (go) window.location.hash = `#/${go.dataset.go}`;
   });
 
-  const form = el.querySelector("#statsForm");
-  const preview = el.querySelector("#queryPreview");
+  const API_URL = "http://127.0.0.1:8000";
 
-  const kpiMAE = el.querySelector("#kpiMAE");
-  const kpiMAPE = el.querySelector("#kpiMAPE");
+  const productId = el.querySelector("#productId");
+  const range = el.querySelector("#range");
+  const metric = el.querySelector("#metric");
+  const unit = el.querySelector("#unit");
+  const btnRun = el.querySelector("#btnRun");
+  const btnClear = el.querySelector("#btnClear");
+  const btnReload = el.querySelector("#btnReload");
+  const status = el.querySelector("#status");
+  const queryPreview = el.querySelector("#queryPreview");
+
+  const kpiTotal = el.querySelector("#kpiTotal");
   const kpiAvg = el.querySelector("#kpiAvg");
   const kpiVol = el.querySelector("#kpiVol");
+  const kpiN = el.querySelector("#kpiN");
 
-  function buildQuery(fd) {
-    const raw = Object.fromEntries(fd.entries());
+  const seriesBody = el.querySelector("#seriesBody");
+
+  const chart = el.querySelector("#chart");
+  const chartEmpty = el.querySelector("#chartEmpty");
+  const tooltip = el.querySelector("#tooltip");
+  const tipDate = el.querySelector("#tipDate");
+  const tipValue = el.querySelector("#tipValue");
+
+  function buildQuery() {
+    const pid = productId.value.trim();
     return {
-      product_name: (raw.product_name || "").trim(),
-      range: raw.range || "30d",
-      metric: raw.metric || "sales",
+      product_id: pid ? Number(pid) : null,
+      range: range.value,
+      metric: metric.value,
+      unit: unit.value,
     };
   }
 
   function updatePreview() {
-    const q = buildQuery(new FormData(form));
-    preview.textContent = JSON.stringify(q, null, 2);
+    queryPreview.textContent = JSON.stringify(buildQuery(), null, 2);
   }
 
-  form.addEventListener("input", updatePreview);
-  updatePreview();
+  function setLoading(on) {
+    btnRun.disabled = on;
+    btnReload.disabled = on;
+    btnRun.textContent = on ? "Cargando..." : "Ver estadísticas";
+  }
 
-  function mockStats(query) {
-    // Simula lo que luego vendrá del backend
-    const mae = Math.random() * 8 + 2;   // 2..10
-    const mape = Math.random() * 0.25 + 0.05; // 5%..30%
-    const avg = Math.random() * 12 + 1;  // 1..13
-    const vol = Math.random() * 1.2 + 0.2; // 0.2..1.4
+  function fmt(n) {
+    if (!Number.isFinite(n)) return "—";
+    return n.toFixed(2);
+  }
 
-    return {
-      mae,
-      mape,
-      avg_sales_per_day: avg,
-      volatility: vol,
+  function renderSeries(series) {
+    seriesBody.innerHTML = series.length
+      ? series
+          .map(
+            (p) => `
+            <tr>
+              <td>${escapeHtml(p.date)}</td>
+              <td>${Number(p.value).toFixed(3)}</td>
+            </tr>
+          `
+          )
+          .join("")
+      : `<tr><td colspan="2" class="muted">Sin datos.</td></tr>`;
+  }
+
+  // =========================
+  //  GRÁFICA SVG (sin libs)
+  // =========================
+  function clearChart() {
+    chart.innerHTML = "";
+    chart.appendChild(chartEmpty);
+    chartEmpty.style.display = "inline";
+    tooltip.style.transform = "translate(-9999px,-9999px)";
+  }
+
+  function renderChart(series) {
+    chart.innerHTML = "";
+    chartEmpty.style.display = "none";
+
+    if (!series?.length) return clearChart();
+
+    const W = chart.clientWidth || 900;
+    const H = chart.clientHeight || 320;
+    const pad = 28;
+
+    const values = series.map((p) => Number(p.value) || 0);
+    let minV = Math.min(...values);
+    let maxV = Math.max(...values);
+    if (minV === maxV) {
+      maxV = minV + 1;
+      minV = Math.max(0, minV - 1);
+    }
+
+    const xScale = (i) =>
+      series.length === 1 ? pad : pad + (i * (W - pad * 2)) / (series.length - 1);
+    const yScale = (v) =>
+      H - pad - ((v - minV) / (maxV - minV)) * (H - pad * 2);
+
+    const xAxisTitle = "Fecha";
+    const yAxisTitle =
+      metric.value === "revenue"
+        ? `Ingresos (${unit.value})`
+        : `Ventas (${unit.value})`;
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+
+    const makeHLine = (y) => {
+      const ln = document.createElementNS(svg.namespaceURI, "line");
+      ln.setAttribute("x1", pad);
+      ln.setAttribute("x2", W - pad);
+      ln.setAttribute("y1", y);
+      ln.setAttribute("y2", y);
+      ln.setAttribute("stroke", "rgba(255,255,255,.08)");
+      return ln;
     };
+    svg.appendChild(makeHLine(yScale(minV)));
+    svg.appendChild(makeHLine(yScale((minV + maxV) / 2)));
+
+    const d = series
+      .map((p, i) => {
+        const x = xScale(i);
+        const y = yScale(Number(p.value) || 0);
+        return `${i === 0 ? "M" : "L"} ${x} ${y}`;
+      })
+      .join(" ");
+
+    const path = document.createElementNS(svg.namespaceURI, "path");
+    path.setAttribute("d", d);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "rgba(255,255,255,.75)");
+    path.setAttribute("stroke-width", "2");
+    svg.appendChild(path);
+
+    series.forEach((p, i) => {
+      const x = xScale(i);
+      const y = yScale(Number(p.value) || 0);
+
+      const dot = document.createElementNS(svg.namespaceURI, "circle");
+      dot.setAttribute("cx", x);
+      dot.setAttribute("cy", y);
+      dot.setAttribute("r", "3.2");
+      dot.setAttribute("fill", "rgba(255,255,255,.9)");
+      svg.appendChild(dot);
+
+      const hit = document.createElementNS(svg.namespaceURI, "circle");
+      hit.setAttribute("cx", x);
+      hit.setAttribute("cy", y);
+      hit.setAttribute("r", "10");
+      hit.setAttribute("fill", "transparent");
+      hit.style.cursor = "crosshair";
+
+      hit.addEventListener("mousemove", (ev) => {
+        tipDate.textContent = p.date;
+        tipValue.textContent = `Valor: ${Number(p.value).toFixed(3)}`;
+        const rect = chart.getBoundingClientRect();
+        tooltip.style.transform = `translate(${ev.clientX - rect.left + 12}px, ${
+          ev.clientY - rect.top + 12
+        }px)`;
+      });
+      hit.addEventListener("mouseleave", () => {
+        tooltip.style.transform = "translate(-9999px,-9999px)";
+      });
+
+      svg.appendChild(hit);
+    });
+
+    const mkText = (x, y, text, opacity = ".55") => {
+      const t = document.createElementNS(svg.namespaceURI, "text");
+      t.setAttribute("x", x);
+      t.setAttribute("y", y);
+      t.setAttribute("fill", `rgba(255,255,255,${opacity})`);
+      t.setAttribute("font-size", "11");
+      t.textContent = text;
+      return t;
+    };
+    svg.appendChild(mkText(pad, H - 10, `min: ${minV.toFixed(2)}`));
+    svg.appendChild(mkText(pad, 16, `max: ${maxV.toFixed(2)}`));
+
+    // títulos de ejes
+    const yTitle = document.createElementNS(svg.namespaceURI, "text");
+    yTitle.setAttribute("x", 12);
+    yTitle.setAttribute("y", H / 2);
+    yTitle.setAttribute("fill", "rgba(255,255,255,.7)");
+    yTitle.setAttribute("font-size", "12");
+    yTitle.setAttribute("text-anchor", "middle");
+    yTitle.setAttribute("transform", `rotate(-90 12 ${H / 2})`);
+    yTitle.textContent = yAxisTitle;
+    svg.appendChild(yTitle);
+
+    const xTitle = document.createElementNS(svg.namespaceURI, "text");
+    xTitle.setAttribute("x", W / 2);
+    xTitle.setAttribute("y", H - 4);
+    xTitle.setAttribute("fill", "rgba(255,255,255,.7)");
+    xTitle.setAttribute("font-size", "12");
+    xTitle.setAttribute("text-anchor", "middle");
+    xTitle.textContent = xAxisTitle;
+    svg.appendChild(xTitle);
+
+    chart.appendChild(svg);
   }
 
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    const query = buildQuery(new FormData(form));
-    console.log("GET /stats/producto", query);
-
-    // futuro:
-    // const res = await api.getProductStats(query)
-    const res = mockStats(query);
-
-    kpiMAE.textContent = res.mae.toFixed(2);
-    kpiMAPE.textContent = (res.mape * 100).toFixed(1) + "%";
-    kpiAvg.textContent = res.avg_sales_per_day.toFixed(2);
-    kpiVol.textContent = res.volatility.toFixed(2);
-
-    alert("Stats generadas (placeholder)");
+  // re-render al cambiar tamaño
+  let lastSeriesForChart = [];
+  const ro = new ResizeObserver(() => {
+    if (lastSeriesForChart?.length) renderChart(lastSeriesForChart);
   });
+  ro.observe(chart);
 
-  el.querySelector("#btnReset").addEventListener("click", () => {
-    setTimeout(() => {
-      updatePreview();
-      kpiMAE.textContent = "—";
-      kpiMAPE.textContent = "—";
+  async function fetchStats() {
+    const q = buildQuery();
+    if (!q.product_id) {
+      status.textContent = "⚠️ Escribe el product_id.";
+      return;
+    }
+
+    const params = new URLSearchParams();
+    params.set("product_id", String(q.product_id));
+    params.set("range", q.range);
+    params.set("metric", q.metric);
+    params.set("unit", q.unit);
+
+    setLoading(true);
+    status.textContent = "Consultando backend...";
+
+    try {
+      const res = await fetch(`${API_URL}/stats/product?${params.toString()}`);
+      const data = await res.json().catch(() => null);
+
+      if (!res.ok) {
+        const msg = data?.detail || `Error HTTP ${res.status}`;
+        throw new Error(typeof msg === "string" ? msg : "Error");
+      }
+
+      kpiTotal.textContent = fmt(Number(data.total));
+      kpiAvg.textContent = fmt(Number(data.avg_per_day));
+      kpiVol.textContent = fmt(Number(data.volatility));
+      kpiN.textContent = String(Array.isArray(data.series) ? data.series.length : 0);
+
+      const series = Array.isArray(data.series) ? data.series : [];
+      renderSeries(series);
+
+      lastSeriesForChart = series;
+      renderChart(series);
+
+      status.textContent = `${data.product_name} (${data.unit}) · ${data.metric} · ${data.range}`;
+    } catch (err) {
+      console.error(err);
+      status.textContent = `${err.message}`;
+      kpiTotal.textContent = "—";
       kpiAvg.textContent = "—";
       kpiVol.textContent = "—";
-    }, 0);
+      kpiN.textContent = "—";
+      renderSeries([]);
+      lastSeriesForChart = [];
+      clearChart();
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  btnRun.addEventListener("click", fetchStats);
+  btnReload.addEventListener("click", fetchStats);
+
+  btnClear.addEventListener("click", () => {
+    productId.value = "";
+    range.value = "30d";
+    metric.value = "sales";
+    unit.value = "piece";
+    status.textContent = "Listo.";
+    kpiTotal.textContent = "—";
+    kpiAvg.textContent = "—";
+    kpiVol.textContent = "—";
+    kpiN.textContent = "—";
+    renderSeries([]);
+    lastSeriesForChart = [];
+    clearChart();
+    updatePreview();
   });
 
+  productId.addEventListener("input", updatePreview);
+  range.addEventListener("change", updatePreview);
+  metric.addEventListener("change", updatePreview);
+  unit.addEventListener("change", updatePreview);
+
+  updatePreview();
+  clearChart();
   return el;
+}
+
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
