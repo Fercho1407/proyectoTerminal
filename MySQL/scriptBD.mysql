@@ -20,8 +20,7 @@ CREATE TABLE sales (
   sold_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   total DECIMAL(12,2) NOT NULL DEFAULT 0,
   payment_method VARCHAR(40) NULL,
-  notes VARCHAR(255) NULL,
-  unit ENUM('kg','g','pieza','paquete','caja','lt','ml') NOT NULL DEFAULT 'pieza'
+  notes VARCHAR(255) NULL
 );
 
 CREATE TABLE sale_items (
@@ -30,13 +29,12 @@ CREATE TABLE sale_items (
   product_id BIGINT UNSIGNED NOT NULL,
 
   qty DECIMAL(12,3) NOT NULL,
-
-  unit ENUM('kg','g','pieza','paquete','caja','lt','ml') NOT NULL DEFAULT 'pieza',
-
+	
+  unit ENUM('kg','g','piece','pack','box','lt','ml') NOT NULL DEFAULT 'piece',
   unit_price DECIMAL(12,2) NOT NULL,
   subtotal DECIMAL(12,2) NOT NULL,
 
-  CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES sales(id),
+  CONSTRAINT fk_sale_items_sale FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE,
   CONSTRAINT fk_sale_items_product FOREIGN KEY (product_id) REFERENCES products(id),
   INDEX idx_sale_items_sale (sale_id),
   INDEX idx_sale_items_product (product_id)
@@ -56,10 +54,11 @@ CREATE TABLE inventory_movements (
   reason VARCHAR(255) NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  CONSTRAINT fk_inv_mov_product FOREIGN KEY (product_id) REFERENCES products(id),
+  CONSTRAINT fk_inv_mov_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
   INDEX idx_inv_mov_product_date (product_id, created_at),
   INDEX idx_inv_mov_type (type)
 );
+
 
 CREATE TABLE events (
   id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -79,10 +78,35 @@ CREATE TABLE event_products (
   CONSTRAINT fk_ep_product FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
+CREATE TABLE IF NOT EXISTS sales_daily (
+  id BIGINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+  sale_date DATE NOT NULL,
+  product_id BIGINT UNSIGNED NOT NULL,
+  qty DECIMAL(12,3) NOT NULL,
+  unit ENUM('kg','g','piece','pack','box','lt','ml') NOT NULL DEFAULT 'piece',
+  category_off VARCHAR(120) NULL,
+  perecedero BOOLEAN NOT NULL DEFAULT 0,
+  en_temporada BOOLEAN NOT NULL DEFAULT 0,
+  temp_inicio_mes TINYINT NULL,
+  temp_fin_mes TINYINT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_sales_daily_product
+    FOREIGN KEY (product_id) REFERENCES products(id)
+    ON DELETE CASCADE,
+
+  UNIQUE KEY uq_sales_daily (sale_date, product_id, unit),
+  INDEX idx_sales_daily_date (sale_date),
+  INDEX idx_sales_daily_product_date (product_id, sale_date)
+);
+
 CREATE OR REPLACE VIEW v_stock_actual AS
 SELECT
   p.id AS product_id,
   p.product_name,
+  p.category_off,
+  p.perecedero,
+  im.unit,
   COALESCE(SUM(
     CASE
       WHEN im.type IN ('IN','ADJUST') THEN im.qty
@@ -92,5 +116,39 @@ SELECT
   ), 0) AS stock_actual
 FROM products p
 LEFT JOIN inventory_movements im ON im.product_id = p.id
-GROUP BY p.id, p.product_name;
+GROUP BY p.id, p.product_name, p.category_off, p.perecedero, im.unit;
+
+USE pt;
+
+CREATE OR REPLACE VIEW v_sales_daily_from_tickets AS
+SELECT
+  DATE(s.sold_at) AS sale_date,
+  si.product_id,
+  si.unit,
+  SUM(si.qty) AS qty,
+  AVG(si.unit_price) AS unit_price_avg
+FROM sales s
+JOIN sale_items si ON si.sale_id = s.id
+GROUP BY DATE(s.sold_at), si.product_id, si.unit;
+
+USE pt;
+
+CREATE OR REPLACE VIEW v_sales_daily_unified AS
+SELECT
+  sale_date,
+  product_id,
+  unit,
+  qty,
+  NULL AS unit_price_avg
+FROM sales_daily
+
+UNION ALL
+
+SELECT
+  sale_date,
+  product_id,
+  unit,
+  qty,
+  unit_price_avg
+FROM v_sales_daily_from_tickets;
 
