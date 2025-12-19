@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import products, inventory, stats, sales, sales_history, ml
+from app.routers import products, inventory, stats, sales, sales_history, ml, dashboard
 
 app = FastAPI()
 
@@ -22,3 +22,4 @@ app.include_router(stats.router)
 app.include_router(sales.router)
 app.include_router(sales_history.router)
 app.include_router(ml.router)
+app.include_router(dashboard.router)
