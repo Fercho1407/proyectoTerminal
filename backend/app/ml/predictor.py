@@ -22,20 +22,15 @@ def load_artifacts():
         _meta = joblib.load(META_PATH)
     return _model, _scaler, _meta
 
-def predict_batch(X: np.ndarray) -> np.ndarray:
-    """
-    X: numpy array shape (n, n_features) con el MISMO orden de 'features'
-    Devuelve predicción en escala real (inv log1p).
-    """
+def predict_one(x_row: np.ndarray) -> float:
     model, scaler, meta = load_artifacts()
+    X = x_row.astype("float32", copy=False).reshape(1, -1)
 
-    X = X.astype("float32", copy=False)
-
-    # Escalar SOLO numéricas como en entrenamiento
     num_idx = meta["num_idx"]
     X[:, num_idx] = scaler.transform(X[:, num_idx])
 
-    y_pred_log = model.predict(X, verbose=0).ravel()
-    y_pred = np.expm1(y_pred_log)
-    y_pred = np.clip(y_pred, 0, None)
+    y_pred_log = model.predict(X, verbose=0).ravel()[0]
+    y_pred = float(np.expm1(y_pred_log))
+    if y_pred < 0:
+        y_pred = 0.0
     return y_pred
