@@ -18,9 +18,13 @@ export function EstadisticasProductoView() {
       </div>
 
       <div class="form">
+        <!-- ✅ CAMBIO: combobox (input + select) en lugar de product_id manual -->
         <div class="field full">
-          <label>Producto (ID)</label>
-          <input type="number" id="productId" min="1" placeholder="Ej. 3" />
+          <label>Producto</label>
+          <input type="text" id="productSearch" placeholder="Buscar producto..." autocomplete="off" />
+          <select id="productId" required style="margin-top:8px;">
+            <option value="">(Cargando...)</option>
+          </select>
         </div>
 
         <div class="field">
@@ -112,6 +116,8 @@ export function EstadisticasProductoView() {
   const API_URL = "http://127.0.0.1:8000";
 
   const productId = el.querySelector("#productId");
+  const productSearch = el.querySelector("#productSearch");
+
   const range = el.querySelector("#range");
   const metric = el.querySelector("#metric");
   const unit = el.querySelector("#unit");
@@ -134,10 +140,67 @@ export function EstadisticasProductoView() {
   const tipDate = el.querySelector("#tipDate");
   const tipValue = el.querySelector("#tipValue");
 
+  // =========================
+  //  PRODUCTS (combobox)
+  // =========================
+  let products = [];
+
+  function productOptionsHtml(selectedId, filterText = "") {
+    if (!products.length) return `<option value="">(Sin productos)</option>`;
+
+    const f = filterText.trim().toLowerCase();
+
+    const filtered = !f
+      ? products
+      : products.filter((p) => {
+          const label = `${p.product_name || ""} ${p.category_off || ""}`.toLowerCase();
+          return label.includes(f);
+        });
+
+    return [
+      `<option value="">Selecciona...</option>`,
+      ...filtered.map((p) => {
+        const sel = Number(selectedId) === Number(p.id) ? "selected" : "";
+        const label = `${p.product_name}${p.category_off ? ` · ${p.category_off}` : ""}`;
+        return `<option value="${p.id}" ${sel}>${escapeHtml(label)}</option>`;
+      }),
+    ].join("");
+  }
+
+  async function fetchProducts() {
+    status.textContent = "Cargando productos...";
+    btnReload.disabled = true;
+    btnRun.disabled = true;
+
+    try {
+      const res = await fetch(`${API_URL}/products`);
+      const data = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(data?.detail || "Error al cargar productos");
+
+      products = Array.isArray(data) ? data : [];
+
+      // re-render select
+      productId.innerHTML = productOptionsHtml(productId.value, productSearch.value);
+      status.textContent = `Productos cargados: ${products.length}.`;
+    } catch (err) {
+      console.error(err);
+      products = [];
+      productId.innerHTML = `<option value="">(Error al cargar)</option>`;
+      status.textContent = `Error: ${err.message}`;
+    } finally {
+      btnReload.disabled = false;
+      btnRun.disabled = false;
+      updatePreview();
+    }
+  }
+
+  // =========================
+  //  QUERY + UI
+  // =========================
   function buildQuery() {
-    const pid = productId.value.trim();
+    const pid = productId.value ? Number(productId.value) : null;
     return {
-      product_id: pid ? Number(pid) : null,
+      product_id: pid,
       range: range.value,
       metric: metric.value,
       unit: unit.value,
@@ -323,7 +386,7 @@ export function EstadisticasProductoView() {
   async function fetchStats() {
     const q = buildQuery();
     if (!q.product_id) {
-      status.textContent = "⚠️ Escribe el product_id.";
+      status.textContent = "⚠️ Selecciona un producto.";
       return;
     }
 
@@ -372,10 +435,21 @@ export function EstadisticasProductoView() {
     }
   }
 
+  productSearch.addEventListener("input", () => {
+    const current = productId.value;
+    productId.innerHTML = productOptionsHtml(current, productSearch.value);
+    updatePreview();
+  });
+
+  productId.addEventListener("change", updatePreview);
+
   btnRun.addEventListener("click", fetchStats);
-  btnReload.addEventListener("click", fetchStats);
+  btnReload.addEventListener("click", () => {
+    fetchProducts();
+  });
 
   btnClear.addEventListener("click", () => {
+    productSearch.value = "";
     productId.value = "";
     range.value = "30d";
     metric.value = "sales";
@@ -391,13 +465,14 @@ export function EstadisticasProductoView() {
     updatePreview();
   });
 
-  productId.addEventListener("input", updatePreview);
   range.addEventListener("change", updatePreview);
   metric.addEventListener("change", updatePreview);
   unit.addEventListener("change", updatePreview);
 
   updatePreview();
   clearChart();
+  fetchProducts(); 
+
   return el;
 }
 
