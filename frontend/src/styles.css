@@ -1,42 +1,21 @@
-body { font-family: Arial, sans-serif; margin: 0; background: #f6f7fb; }
-.app { min-height: 100vh; }
 
-.topbar { padding: 14px 18px; background: #111827; color: white; }
-.topbar h1 { margin: 0; font-size: 18px; }
 
-.menu { padding: 12px 18px; background: white; border-bottom: 1px solid #e5e7eb; }
-.menu a { margin-right: 12px; text-decoration: none; color: #111827; }
-.menu a:hover { text-decoration: underline; }
-
-.content { padding: 18px; }
-
-.card {
-  background: white;
-  padding: 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  margin-bottom: 14px;
+.app-container {
+  display: flex; /* Esto pone los hijos (Sidebar y Main) lado a lado */
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  width: 100vw; /* Ocupa el 100% del ancho */
+  overflow: hidden; /* Evita scrolls dobles feos */
 }
 
-.label { display: block; margin: 10px 0 6px; font-size: 12px; color: #374151; }
-
-input, select, button {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #d1d5db;
+.sidebar {
+  width: 250px; /* Ancho fijo para el menú */
+  flex-shrink: 0; /* Evita que el sidebar se aplaste si la pantalla es chica */
+  height: 100%; /* Altura completa */
+  overflow-y: auto; /* Scroll interno si el menú es muy largo */
 }
 
-button {
-  margin-top: 12px;
-  background: #2563eb;
-  color: white;
-  border: none;
-  cursor: pointer;
+.main-content {
+  flex: 1; /* ESTO ES CLAVE: Toma todo el espacio restante disponible */
+  padding: 20px; /* Espacio interno */
+  overflow-y: auto; /* Permite scroll solo en el contenido, no en el sidebar */
 }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
-
-.error { color: #b91c1c; margin-top: 10px; }
-
-.table { width: 100%; border-collapse: collapse; }
-.table th, .table td { padding: 10px; border-bottom: 1px solid #e5e7eb; text-align: left; }

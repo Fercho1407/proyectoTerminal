@@ -1,36 +1,25 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Dashboard from './pages/Dashboard';
-import Productos from "./pages/Productos";
-import Ventas from "./pages/Ventas";
-import Inventario from "./pages/Inventario";
-import Predicciones from "pages/Predicciones";
-import "./styles.css";
+// App.tsx
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import { appRoutes } from "./routes";
+import "./styles.css"; // Asegúrate de importar tu CSS
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="app">
-        <header className="topbar">
-          <h1>Inventario IA</h1>
-        </header>
+      {/* 1. Agregamos este div contenedor con clase 'app-container' */}
+      <div className="app-container">
+        
+        <Sidebar />
 
-        <nav className="menu">
-          <Link to="/">Dashboard</Link>
-          <Link to="/productos">Productos</Link>
-          <Link to="/ventas">Ventas</Link>
-          <Link to="/inventario">Inventario</Link>
-          <Link to="/predicciones">Predicciones</Link>
-        </nav>
-
-        <main className="content">
+        <main className="main-content">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/productos" element={<Productos />} />
-            <Route path="/ventas" element={<Ventas />} />
-            <Route path="/inventario" element={<Inventario />} />
-            <Route path="/predicciones" element={<Predicciones />} />
+            {appRoutes.map((route) => (
+              <Route key={route.path} path={route.path} element={route.element} />
+            ))}
           </Routes>
         </main>
+        
       </div>
     </BrowserRouter>
   );

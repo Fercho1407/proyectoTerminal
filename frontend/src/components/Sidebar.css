@@ -1,0 +1,52 @@
+/* Sidebar minimalista */
+.sidebar {
+  position: sticky;
+  top: 0;
+  left: 0;
+
+  width: 220px;
+  height: 100vh;
+
+  padding: 16px 12px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb; /* gris muy suave */
+}
+
+/* Título */
+.sidebar-title {
+  margin: 0 0 16px;
+  padding: 0 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Navegación */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Links */
+.sidebar-link {
+  padding: 8px 10px;
+  border-radius: 6px;
+
+  font-size: 13px;
+  text-decoration: none;
+  color: #374151;
+
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #f3f4f6;
+}
+
+/* Ruta activa */
+.sidebar-link.active {
+  background-color: #111827;
+  color: #ffffff;
+}
