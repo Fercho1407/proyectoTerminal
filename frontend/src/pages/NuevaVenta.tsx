@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import {API_URL} from "../config"
-import ItemVenta from "../components/ItemVenta";
+import {API_URL} from "./../config"
+import ItemVenta from "./../components/ItemVenta";
 
 export default function NuevaVenta() {
     const [datos, setDatos] = useState([]);
@@ -28,7 +28,9 @@ export default function NuevaVenta() {
 
     return (
     <div>
-      <ItemVenta></ItemVenta>
+      <div>
+        <button>Aniadir Item</button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -42,13 +44,7 @@ export default function NuevaVenta() {
         </thead>
 
         <tbody>
-          {datos.map((producto) => (
-            <tr key={producto.id}>
-              <td>{producto.product_name}</td>
-              <td>{producto.category_off}</td>
-              <td>{producto.shelf_life_pantry_days}</td>
-            </tr>
-          ))}
+          <ItemVenta></ItemVenta>
         </tbody>
       </table>
     </div>
