@@ -1,8 +1,13 @@
-import { useState, useEffect } from "react";
-import { API_URL } from "../config";
+import { useState } from "react";
 
-const ItemVenta = () => {
-  const [productos, setProductos] = useState([]);
+interface ItemVentaProps {
+  id: string;
+  productos: string[];
+  onRemove: (id: string) => void;
+  canRemove: boolean;
+}
+
+const ItemVenta = ({ id, productos, onRemove, canRemove }: ItemVentaProps) => {
   const [idSeleccionado, setIdSeleccionado] = useState("");
   const [cantidadProducto, setCantidadProducto] = useState("");
   const [unidad, setUnidad] = useState("");
@@ -10,92 +15,64 @@ const ItemVenta = () => {
 
   const subtotal = Number(cantidadProducto) * Number(precioUnitario);
 
-  useEffect(() => {
-    const obtenerProductos = async () => {
-      try {
-        const respuesta = await fetch(`${API_URL}/products`);
-        const datos = await respuesta.json();
-        setProductos(datos);
-      } catch (error) {
-        console.error("Error al obtener productos:", error);
-      }
-    };
-
-    obtenerProductos();
-  }, []);
-
-  
-
   return (
     <tr>
-        <td>
-            <select
-                id="select-producto"
-                value={idSeleccionado}
-                onChange={(e) => {
-                    const id = e.target.value;
-                    setIdSeleccionado(id);
-                    console.log("Producto ID seleccionado:", id);
-                }}
-                className="border p-2 rounded w-full"
-            >
-                
-                {/* Opción por defecto (placeholder) */}
-                <option value="">-- Elige una opción --</option>
+      <td>
+        <select
+          value={idSeleccionado}
+          onChange={(e) => setIdSeleccionado(e.target.value)}
+        >
+          <option value="">-- Elige una opción --</option>
 
-                {/* Iterar sobre los productos para crear las opciones */}
-                {productos.map((prod) => (
-                <option key={prod.id} value={prod.id}>
-                    {prod.product_name} - {prod.category_off}
-                </option>
-                ))}
-            </select>
-        </td>
+          {productos.map((prod) => (
+            <option key={prod.id} value={prod.id}>
+              {prod.product_name} - {prod.category_off}
+            </option>
+          ))}
+        </select>
+      </td>
 
-        <td>
-            <input
-                type="number"
-                value={cantidadProducto}
-                onChange={(e) => setCantidadProducto(e.target.value)}
-                placeholder="Cantidad de producto a vender"
-            />   
-        </td>
+      <td>
+        <input
+          type="number"
+          value={cantidadProducto}
+          onChange={(e) => setCantidadProducto(e.target.value)}
+        />
+      </td>
 
-        <td>
-            <select
-                id="unidad"
-                value={unidad}
-                onChange={(e) => setUnidad(e.target.value)}
-            >
-                <option value="">Selecciona una unidad</option>
-                <option value="pieza">Pieza</option>
-                <option value="kg">Kg</option>
-                <option value="g">Gramos</option>
-                <option value="paquete">Paquete</option>
-                <option value="caja">Caja</option>
-                <option value="lt">Litros</option>
-                <option value="ml">Mililitros</option>
-            </select>
-        </td>
+      <td>
+        <select value={unidad} onChange={(e) => setUnidad(e.target.value)}>
+          <option value="">Selecciona unidad</option>
+          <option value="pieza">Pieza</option>
+          <option value="kg">Kg</option>
+          <option value="g">Gramos</option>
+          <option value="paquete">Paquete</option>
+          <option value="caja">Caja</option>
+          <option value="lt">Litros</option>
+          <option value="ml">Mililitros</option>
+        </select>
+      </td>
 
-        <td>
-            <input
-                type="number"
-                value={precioUnitario}
-                onChange={(e) => setPrecioUnitario(e.target.value)}
-                placeholder="Precio por unidad"
-            />   
-        </td>
+      <td>
+        <input
+          type="number"
+          value={precioUnitario}
+          onChange={(e) => setPrecioUnitario(e.target.value)}
+        />
+      </td>
 
-        <td>
-            <span>{subtotal || 0}</span>
-        </td>
+      <td>{subtotal || 0}</td>
 
-        <td> 
-            <button>Quitar</button>
-        </td>
-
-      </tr>
+      <td>
+        <button
+          type="button"
+          onClick={() => onRemove(id)}
+          disabled={!canRemove}
+        >
+          Quitar
+        </button>
+      </td>
+    </tr>
   );
 };
 
