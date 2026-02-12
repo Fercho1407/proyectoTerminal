@@ -1,31 +1,43 @@
-import { useState } from "react";
+import { useMemo } from "react"; // ✅ (CAMBIO) ya no usamos useState interno
 
-interface ItemVentaProps {
-  id: string;
-  productos: string[];
-  onRemove: (id: string) => void;
-  canRemove: boolean;
+interface Producto {
+  id: number;
+  product_name: string;
+  category_off: string;
 }
 
-const ItemVenta = ({ id, productos, onRemove, canRemove }: ItemVentaProps) => {
-  const [idSeleccionado, setIdSeleccionado] = useState("");
-  const [cantidadProducto, setCantidadProducto] = useState("");
-  const [unidad, setUnidad] = useState("");
-  const [precioUnitario, setPrecioUnitario] = useState("");
+interface Item {
+  id: string;
+  productoId: string;
+  cantidad: number;
+  unidad: string;
+  precioUnitario: number;
+}
 
-  const subtotal = Number(cantidadProducto) * Number(precioUnitario);
+interface ItemVentaProps {
+  item: Item; 
+  productos: Producto[]; 
+  onRemove: (id: string) => void;
+  canRemove: boolean;
+  onChangeItem: (itemActualizado: Item) => void;
+}
+
+const ItemVenta = ({ item, productos, onRemove, canRemove, onChangeItem }: ItemVentaProps) => {
+  const subtotal = useMemo(() => item.cantidad * item.precioUnitario, [item]);
 
   return (
     <tr>
       <td>
         <select
-          value={idSeleccionado}
-          onChange={(e) => setIdSeleccionado(e.target.value)}
+          value={item.productoId} 
+          onChange={(e) =>
+            onChangeItem({ ...item, productoId: e.target.value }) 
+          }
         >
           <option value="">-- Elige una opción --</option>
 
           {productos.map((prod) => (
-            <option key={prod.id} value={prod.id}>
+            <option key={prod.id} value={String(prod.id)}> 
               {prod.product_name} - {prod.category_off}
             </option>
           ))}
@@ -35,19 +47,28 @@ const ItemVenta = ({ id, productos, onRemove, canRemove }: ItemVentaProps) => {
       <td>
         <input
           type="number"
-          value={cantidadProducto}
-          onChange={(e) => setCantidadProducto(e.target.value)}
+          min={0}
+          value={item.cantidad} 
+          onChange={(e) =>
+            onChangeItem({ ...item, cantidad: Number(e.target.value) }) 
+          }
         />
       </td>
 
       <td>
-        <select value={unidad} onChange={(e) => setUnidad(e.target.value)}>
+        <select
+          value={item.unidad} 
+          onChange={(e) =>
+            onChangeItem({ ...item, unidad: e.target.value }) 
+          }
+        >
+
           <option value="">Selecciona unidad</option>
-          <option value="pieza">Pieza</option>
+          <option value="piece">Pieza</option>
           <option value="kg">Kg</option>
           <option value="g">Gramos</option>
-          <option value="paquete">Paquete</option>
-          <option value="caja">Caja</option>
+          <option value="pack">Paquete</option>
+          <option value="box">Caja</option>
           <option value="lt">Litros</option>
           <option value="ml">Mililitros</option>
         </select>
@@ -56,8 +77,11 @@ const ItemVenta = ({ id, productos, onRemove, canRemove }: ItemVentaProps) => {
       <td>
         <input
           type="number"
-          value={precioUnitario}
-          onChange={(e) => setPrecioUnitario(e.target.value)}
+          min={1}
+          value={item.precioUnitario} 
+          onChange={(e) =>
+            onChangeItem({ ...item, precioUnitario: Number(e.target.value) }) 
+          }
         />
       </td>
 
@@ -66,7 +90,7 @@ const ItemVenta = ({ id, productos, onRemove, canRemove }: ItemVentaProps) => {
       <td>
         <button
           type="button"
-          onClick={() => onRemove(id)}
+          onClick={() => onRemove(item.id)}
           disabled={!canRemove}
         >
           Quitar
