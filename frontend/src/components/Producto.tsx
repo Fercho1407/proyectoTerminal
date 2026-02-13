@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { API_URL } from "./../config";
+import { ModalEditar } from "./ModalEditar";
 
 interface Product {
   product_name: string;
@@ -15,6 +17,8 @@ interface ProductProps {
 }
 
 export const Producto = ({ product }: ProductProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   const verDatosProducto = () => {
     alert(
       `Detalles del Producto:\n` +
@@ -29,39 +33,84 @@ export const Producto = ({ product }: ProductProps) => {
     );
   };
 
-  const editarProducto = () => {};
-
   const eliminarProducto = async () => {
     const confirmar = window.confirm(
       `¿Eliminar este producto: ${product.product_name}?`,
     );
 
-    if (confirmar) {
-      try {
-        const response = await fetch(`${API_URL}/products/${product.id}`, {
-          method: "DELETE",
-        });
-        if (response.ok) {
-          alert("Producto eliminado con éxito");
-          // Aquí deberías refrescar la lista de productos
-        }
-      } catch (error) {
-        alert("No se pudo eliminar el producto seleccionado");
-        console.error("Error al eliminar:", error);
+    if (!confirmar) return;
+
+    try {
+      const response = await fetch(`${API_URL}/products/${product.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Error al eliminar");
       }
+
+      alert("Producto eliminado con éxito");
+      window.location.reload(); // temporal
+
+    } catch (error) {
+      alert("No se pudo eliminar el producto seleccionado");
+      console.error("Error al eliminar:", error);
+    }
+  };
+
+  const guardarCambios = async (updatedProduct: Product) => {
+    try {
+      const response = await fetch(`${API_URL}/products/${updatedProduct.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Error al actualizar");
+      }
+
+      alert("Producto actualizado correctamente");
+      setIsEditing(false);
+      window.location.reload(); // temporal
+
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo actualizar el producto");
     }
   };
 
   return (
-    <tr>
-      <td>{product.product_name}</td>
-      <td>{product.category_off}</td>
-      <td>{product.perecedero === 1 ? "si" : "no"}</td>
-      <td>
-        <button onClick={verDatosProducto}>Ver</button>
-        <button onClick={editarProducto}>Editar</button>
-        <button onClick={() => eliminarProducto(product.id)}>Eliminar</button>
-      </td>
-    </tr>
+    <>
+      <tr className="product-row">
+        <td className="product-cell">{product.product_name}</td>
+        <td className="product-cell">{product.category_off}</td>
+        <td className="product-cell">{product.perecedero === 1 ? "si" : "no"}</td>
+
+        <td className="product-cell product-actionsCell">
+          <button className="btn btn-view" onClick={verDatosProducto}>
+            Ver
+          </button>
+
+          <button className="btn btn-edit" onClick={() => setIsEditing(true)}>
+            Editar
+          </button>
+
+          <button className="btn btn-danger" onClick={eliminarProducto}>
+            Eliminar
+          </button>
+        </td>
+      </tr>
+
+      {isEditing && (
+        <ModalEditar
+          product={product}
+          onClose={() => setIsEditing(false)}
+          onSave={guardarCambios}
+        />
+      )}
+    </>
   );
 };
