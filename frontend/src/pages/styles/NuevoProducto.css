@@ -1,0 +1,221 @@
+/* NuevoProducto.css */
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --card-soft: #f9fafc;
+  --border: #e5e7eb;
+
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --primary: #6366f1;
+  --primary-soft: #eef2ff;
+
+  --danger: #ef4444;
+
+  --shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+
+  --radius: 16px;
+  --radius-sm: 12px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ===== Page ===== */
+.product-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===== Header ===== */
+.product-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--card-soft);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  opacity: 0.92;
+}
+
+.btn-ghost {
+  background: white;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.btn-ghost:hover {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+/* ===== Form ===== */
+.product-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 22px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  transition: 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #9ca3af;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+/* Quitar spinners (opcional) */
+.field input[type="number"]::-webkit-outer-spin-button,
+.field input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.field input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ===== JSON Card ===== */
+.product-json {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.product-jsonHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.product-jsonHead h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.product-json textarea {
+  width: 100%;
+  min-height: 240px;
+  resize: vertical;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card-soft);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", monospace;
+  line-height: 1.35;
+}
+
+.product-json textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+/* ===== Actions ===== */
+.product-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .product-page {
+    padding: 20px;
+  }
+
+  .product-form {
+    grid-template-columns: 1fr;
+  }
+
+  .product-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

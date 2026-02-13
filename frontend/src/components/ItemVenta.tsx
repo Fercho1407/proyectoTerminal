@@ -1,4 +1,4 @@
-import { useMemo } from "react"; // ✅ (CAMBIO) ya no usamos useState interno
+import { useMemo } from "react";
 
 interface Producto {
   id: number;
