@@ -2,12 +2,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import { appRoutes } from "./routes";
-import "./styles.css"; // Asegúrate de importar tu CSS
+import "./styles.css"; 
 
 export default function App() {
   return (
     <BrowserRouter>
-      {/* 1. Agregamos este div contenedor con clase 'app-container' */}
       <div className="app-container">
         
         <Sidebar />

@@ -15,7 +15,7 @@ export default function NuevaVenta() {
   const [productos, setProductos] = useState([]);
   const [items, setItems] = useState<Item[]>([
     {
-      id: crypto.randomUUID(),
+      id: generarId(),
       productoId: "",
       cantidad: 0,
       unidad: "",
@@ -24,6 +24,14 @@ export default function NuevaVenta() {
   ]);
   const [metodoPago, setMetodoPago] = useState("");
   const [notas, setNotas] = useState("");
+
+  function generarId() {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+  }
+
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -39,7 +47,7 @@ export default function NuevaVenta() {
     setItems((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: generarId(),
         productoId: "",
         cantidad: 0,
         unidad: "",
@@ -80,7 +88,7 @@ export default function NuevaVenta() {
       setNotas("");
       setItems([
         {
-          id: crypto.randomUUID(),
+          id: generarId(),
           productoId: "",
           cantidad: 0,
           unidad: "",
@@ -90,7 +98,7 @@ export default function NuevaVenta() {
   }
 
   const enviarVenta = async () => {
-    //Validaciones para no enviar datos erroneos al backend
+    //Validaciones basicas
     const hayInvalido = items.some(
       (it) =>
         !it.productoId ||
