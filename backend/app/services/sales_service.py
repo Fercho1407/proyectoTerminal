@@ -41,7 +41,7 @@ def create_sale(db: Session, payload: dict) -> Sale:
             )
             db.add(si)
 
-            # registrar movimiento OUT (sin conversiones)
+            # registrar movimiento OUT
             mov = InventoryMovement(
                 product_id=int(it["product_id"]),
                 type="OUT",
