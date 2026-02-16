@@ -231,10 +231,10 @@ export default function Inventario() {
 
   return (
     <section className="view active">
+      <h2>Inventario</h2>
       <div className="card">
         <div className="view-header">
           <div>
-            <h3>Inventario (stock actual)</h3>
             <p className="muted">{estado}</p>
           </div>
 

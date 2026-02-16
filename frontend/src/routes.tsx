@@ -3,6 +3,7 @@ import HistorialVentas from "./pages/HistorialVentas";
 import Inventario from "./pages/Inventario";
 import NuevaVenta from "./pages/NuevaVenta";
 import NuevoProducto from "./pages/NuevoProducto";
+import Predicciones from "./pages/Predicciones";
 import Productos from "./pages/Productos";
 
 
@@ -36,5 +37,10 @@ export const appRoutes = [
     path: "/inventario",
     label: "Inventario",
     element: <Inventario/>,
+  },
+  {
+    path: "/predicciones",
+    label: "Predicciones",
+    element: <Predicciones/>,
   },
 ];

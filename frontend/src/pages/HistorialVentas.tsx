@@ -168,10 +168,10 @@ export default function HistorialVentas() {
 
   return (
     <section className="view active">
+      <h2>Historial de ventas</h2>
       <div className="card">
         <div className="view-header">
           <div>
-            <h3>Historial de ventas</h3>
             <p className="muted">{estado}</p>
           </div>
 
