@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Indicadores from "./../components/dashboard/Indicadores";
 import GraficaVentas from "./../components/dashboard/GraficaVentas";
 import type { Resumen, PuntoTendencia } from "./../components/dashboard/tipos";
-import {API_URL} from "./../config";
+import { API_URL } from "./../config";
+import "./styles/Dashboard.css";
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -20,9 +21,7 @@ export default function Dashboard() {
       const respuestaResumen = await fetch(`${API_URL}/dashboard/summary`);
       const datosResumen = await respuestaResumen.json();
 
-      const respuestaTendencia = await fetch(
-        `${API_URL}/dashboard/trend?days=${dias}`,
-      );
+      const respuestaTendencia = await fetch(`${API_URL}/dashboard/trend?days=${dias}`);
       const datosTendencia = await respuestaTendencia.json();
 
       setResumen(datosResumen);
@@ -39,24 +38,23 @@ export default function Dashboard() {
   }, [dias]);
 
   return (
-    <section style={{ padding: 20 }}>
-      <h2>Dashboard</h2>
-      <p>{mensaje}</p>
+    <section className="dashboard">
+      <h2 className="dashboard__titulo">Dashboard</h2>
+      <p className="dashboard__mensaje">{mensaje}</p>
 
-      <div style={{ marginBottom: 20 }}>
-        <button onClick={cargarDatos}>Actualizar</button>
+      <div className="dashboard__acciones">
+        <button className="boton" onClick={cargarDatos}>
+          Actualizar
+        </button>
 
-        <button
-          onClick={() => navigate("/ventas-nueva")}
-          style={{ marginLeft: 10 }}
-        >
+        <button className="boton boton--primario" onClick={() => navigate("/venta-nueva")}>
           Nueva venta
         </button>
       </div>
 
-      <div>
-        <label>Días: </label>
-        <select value={dias} onChange={(e) => setDias(Number(e.target.value))}>
+      <div className="dashboard__filtros">
+        <label className="dashboard__label">Días:</label>
+        <select className="select" value={dias} onChange={(e) => setDias(Number(e.target.value))}>
           <option value={7}>7</option>
           <option value={14}>14</option>
           <option value={30}>30</option>
@@ -64,7 +62,6 @@ export default function Dashboard() {
       </div>
 
       <Indicadores resumen={resumen} />
-
       <GraficaVentas datos={tendencia} />
     </section>
   );

@@ -11,23 +11,21 @@ function formatearDinero(numero: number | undefined) {
 
 export default function Indicadores({ resumen }: Props) {
   return (
-    <div style={{ display: "flex", gap: 20, marginTop: 20 }}>
-      
-      <div style={{ padding: 20, border: "1px solid gray", borderRadius: 8 }}>
-        <h4>Ventas (MXN)</h4>
-        <strong>{formatearDinero(resumen?.ventas_mxn)}</strong>
+    <div className="indicadores">
+      <div className="indicador">
+        <h4 className="indicador__titulo">Ventas (MXN)</h4>
+        <div className="indicador__valor">{formatearDinero(resumen?.sales_mxn)}</div>
       </div>
 
-      <div style={{ padding: 20, border: "1px solid gray", borderRadius: 8 }}>
-        <h4>Tickets</h4>
-        <strong>{resumen?.tickets ?? 0}</strong>
+      <div className="indicador">
+        <h4 className="indicador__titulo">Tickets</h4>
+        <div className="indicador__valor">{resumen?.tickets ?? 0}</div>
       </div>
 
-      <div style={{ padding: 20, border: "1px solid gray", borderRadius: 8 }}>
-        <h4>Productos vendidos</h4>
-        <strong>{resumen?.productos_vendidos ?? 0}</strong>
+      <div className="indicador">
+        <h4 className="indicador__titulo">Productos vendidos</h4>
+        <div className="indicador__valor">{resumen?.items_sold ?? 0}</div>
       </div>
-
     </div>
   );
 }
