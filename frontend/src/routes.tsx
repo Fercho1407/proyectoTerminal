@@ -1,5 +1,6 @@
 import Dashboard from "./pages/Dashboard"
 import HistorialVentas from "./pages/HistorialVentas";
+import Inventario from "./pages/Inventario";
 import NuevaVenta from "./pages/NuevaVenta";
 import NuevoProducto from "./pages/NuevoProducto";
 import Productos from "./pages/Productos";
@@ -30,5 +31,10 @@ export const appRoutes = [
     path: "/producto-nuevo",
     label: "Nuevo producto",
     element: <NuevoProducto/>,
+  },
+  {
+    path: "/inventario",
+    label: "Inventario",
+    element: <Inventario/>,
   },
 ];

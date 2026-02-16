@@ -1,0 +1,202 @@
+/* Contenedor principal */
+.view.active {
+  width: 100%;
+  padding: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+/* Header */
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  margin-bottom: 14px;
+}
+
+.view-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.muted {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.view-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.btn {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #0f172a;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.btn.secondary:hover {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+/* Form */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.8);
+}
+
+.field input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 14px;
+  outline: none;
+  transition: 0.15s ease;
+}
+
+.field input:focus {
+  border-color: rgba(15, 23, 42, 0.3);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(15, 23, 42, 0.03);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  color: rgba(15, 23, 42, 0.75);
+}
+
+tbody td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+tbody tr:hover td {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Tags generales */
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* Estado OK */
+.tag.good {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+/* Estado Bajo */
+.tag.warn {
+  background: rgba(245, 158, 11, 0.2);
+  color: #b45309;
+}
+
+/* Estado Crítico */
+.tag.bad {
+  background: rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
+}
+
+/* Ajuste rápido */
+.qty {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .view-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .view-header-actions {
+    justify-content: flex-start;
+  }
+
+  .qty .btn {
+    width: 100%;
+  }
+}
