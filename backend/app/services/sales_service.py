@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session, joinedload
 from fastapi import HTTPException
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from app.models.sale import Sale
 from app.models.sale_item import SaleItem
@@ -12,13 +13,13 @@ def create_sale(db: Session, payload: dict) -> Sale:
         raise HTTPException(status_code=400, detail="La venta debe tener al menos 1 item.")
 
     sale = Sale(
-        sold_at=payload.get("sold_at") or datetime.utcnow(),
+        sold_at=payload.get("sold_at") or datetime.now(ZoneInfo("America/Mexico_City")),
         payment_method=payload.get("payment_method"),
         notes=payload.get("notes"),
         total=0,
     )
 
-    # Transacción manual (si algo falla, rollback)
+    # Transacción manual
     try:
         db.add(sale)
         db.flush()  # para obtener sale.id
@@ -41,7 +42,7 @@ def create_sale(db: Session, payload: dict) -> Sale:
             )
             db.add(si)
 
-            # registrar movimiento OUT (sin conversiones)
+            # registrar movimiento OUT
             mov = InventoryMovement(
                 product_id=int(it["product_id"]),
                 type="OUT",

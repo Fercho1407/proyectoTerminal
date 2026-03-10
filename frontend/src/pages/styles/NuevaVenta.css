@@ -1,0 +1,271 @@
+:root {
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --card-soft: #f9fafc;
+  --border: #e5e7eb;
+
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --primary: #6366f1;
+  --primary-soft: #eef2ff;
+
+  --danger: #ef4444;
+
+  --shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+
+  --radius: 16px;
+  --radius-sm: 12px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ===== PAGE FULL WIDTH ===== */
+
+.venta-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 32px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ===== HEADER ===== */
+
+.venta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.venta-header h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+/* ===== BUTTONS ===== */
+
+.btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--card-soft);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.btn-ghost {
+  background: white;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* ===== FORM ===== */
+
+.venta-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.field input {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: white;
+  transition: 0.2s ease;
+}
+
+.field input:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+/* ===== TABLE ===== */
+
+.venta-tableWrap {
+  flex: 1;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.venta-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.venta-table thead {
+  background: var(--card-soft);
+}
+
+.venta-table th,
+.venta-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.venta-table th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.venta-table tbody tr:hover {
+  background: #f9fafc;
+}
+
+/* Inputs dentro de tabla */
+.venta-table input,
+.venta-table select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.venta-table input:focus,
+.venta-table select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+/* ===== SUMMARY ===== */
+
+.venta-summary {
+  display: flex;
+  gap: 20px;
+}
+
+.summary-card {
+  flex: 1;
+  background: var(--card);
+  padding: 18px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.summary-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* ===== JSON ===== */
+
+.venta-json {
+  background: var(--card);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.venta-jsonHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.venta-json textarea {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f9fafc;
+  font-family: monospace;
+}
+
+.venta-json textarea:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+.venta-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .venta-page {
+    padding: 20px;
+  }
+
+  .venta-form {
+    grid-template-columns: 1fr;
+  }
+
+  .venta-summary {
+    flex-direction: column;
+  }
+
+  .venta-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

@@ -66,5 +66,4 @@ def get_sales_history(
         )
 
     rows = db.execute(stmt).mappings().all()
-    # mappings() => dict por fila, perfecto para Pydantic
     return rows

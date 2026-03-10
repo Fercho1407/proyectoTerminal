@@ -1,0 +1,282 @@
+.view.active {
+  width: 100%;
+  padding: 16px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.card.soft {
+  background: rgba(15, 23, 42, 0.02);
+  box-shadow: none;
+}
+
+.separacion {
+  margin-top: 12px;
+}
+
+/* Header */
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  margin-bottom: 14px;
+}
+
+.view-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.muted {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.view-header-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Botones */
+.btn {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: #0f172a;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.btn.secondary:hover {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+/* Form */
+.form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.8);
+}
+
+.input {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 14px;
+  outline: none;
+  transition: 0.15s ease;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.input:focus {
+  border-color: rgba(15, 23, 42, 0.3);
+  box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08);
+}
+
+.hint {
+  margin-top: 6px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Payload */
+.subtitulo {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.code {
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: #ffffff;
+  font-size: 12px;
+  overflow: auto;
+  color: #0f172a;
+}
+
+/* Chips */
+.chips {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.tag.warn {
+  background: rgba(245, 158, 11, 0.2);
+  color: #b45309;
+}
+
+/* Gráfica */
+.chart-wrap {
+  position: relative;
+  margin-top: 12px;
+}
+
+.chart {
+  height: 320px;
+  border: 1px dashed rgba(15, 23, 42, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background: #ffffff;
+}
+
+.chart-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tooltip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-9999px, -9999px);
+  pointer-events: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  opacity: 0.98;
+}
+
+.tooltip-value {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Tabla */
+.tabla-scroll {
+  margin-top: 12px;
+  overflow: auto;
+  max-height: 220px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+thead th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(15, 23, 42, 0.03);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  color: rgba(15, 23, 42, 0.75);
+}
+
+tbody td {
+  padding: 10px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  color: #0f172a;
+}
+
+tbody tr:hover td {
+  background: rgba(15, 23, 42, 0.02);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .view-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .view-header-actions {
+    justify-content: flex-start;
+  }
+
+  .actions {
+    justify-content: stretch;
+  }
+
+  .actions .btn {
+    width: 100%;
+  }
+}

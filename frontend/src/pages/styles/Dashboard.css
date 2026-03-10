@@ -1,0 +1,159 @@
+/* ===== Dashboard (minimalista y limpio) ===== */
+
+.dashboard {
+  padding: 20px;
+}
+
+.dashboard__titulo {
+  font-size: 22px;
+  margin: 0 0 6px 0;
+}
+
+.dashboard__mensaje {
+  margin: 0 0 16px 0;
+  color: #666;
+}
+
+/* Acciones */
+.dashboard__acciones {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.boton {
+  border: 1px solid #d7d7d7;
+  background: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.05s ease, background 0.15s ease;
+}
+
+.boton:hover {
+  background: #f6f6f6;
+}
+
+.boton:active {
+  transform: scale(0.98);
+}
+
+.boton--primario {
+  border-color: #cfcfcf;
+}
+
+/* Filtro días */
+.dashboard__filtros {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 18px 0;
+}
+
+.dashboard__label {
+  color: #555;
+  font-weight: 600;
+}
+
+.select {
+  border: 1px solid #d7d7d7;
+  background: white;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.select:focus {
+  border-color: #bdbdbd;
+}
+
+/* Indicadores */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+@media (max-width: 780px) {
+  .indicadores {
+    grid-template-columns: 1fr;
+  }
+}
+
+.indicador {
+  border: 1px solid #e3e3e3;
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.indicador__titulo {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 700;
+}
+
+.indicador__valor {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+/* Gráfica */
+.grafica {
+  margin-top: 18px;
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  background: #fff;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.grafica__titulo {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 700;
+}
+
+.grafica__vacio {
+  height: 300px;
+  display: grid;
+  place-items: center;
+  color: #777;
+  border: 1px dashed #dcdcdc;
+  border-radius: 12px;
+}
+
+/* Ayuda visual para la gráfica */
+.grafica__svg {
+  width: 100%;
+  height: 300px;
+  display: block;
+}
+
+.grafica__grid {
+  stroke: #ededed;
+  stroke-width: 1;
+}
+
+.grafica__linea {
+  stroke: #222;
+  stroke-width: 2.2;
+  fill: none;
+}
+
+.grafica__punto {
+  fill: #fff;
+  stroke: #222;
+  stroke-width: 2;
+}
+
+.grafica__etiqueta {
+  font-size: 12px;
+  fill: #777;
+}

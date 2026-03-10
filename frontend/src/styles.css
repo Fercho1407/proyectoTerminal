@@ -1,0 +1,21 @@
+
+
+.app-container {
+  display: flex; /* Esto pone los hijos (Sidebar y Main) lado a lado */
+  height: 100vh; /* Ocupa el 100% de la altura de la pantalla */
+  width: 100vw; /* Ocupa el 100% del ancho */
+  overflow: hidden; /* Evita scrolls dobles feos */
+}
+
+.sidebar {
+  width: 250px; /* Ancho fijo para el menú */
+  flex-shrink: 0; /* Evita que el sidebar se aplaste si la pantalla es chica */
+  height: 100%; /* Altura completa */
+  overflow-y: auto; /* Scroll interno si el menú es muy largo */
+}
+
+.main-content {
+  flex: 1; /* ESTO ES CLAVE: Toma todo el espacio restante disponible */
+  padding: 20px; /* Espacio interno */
+  overflow-y: auto; /* Permite scroll solo en el contenido, no en el sidebar */
+}

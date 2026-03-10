@@ -4,9 +4,11 @@ from app.routers import products, inventory, stats, sales, sales_history, ml, da
 
 app = FastAPI()
 
+origins = ["*"]  # Permite cualquier origen
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex = 'https?://.*',
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
