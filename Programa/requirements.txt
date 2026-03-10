@@ -1,6 +1,5 @@
 pandas
 numpy
-sqlachemy
 matplotlib
 tensorflow
 scikit-learn

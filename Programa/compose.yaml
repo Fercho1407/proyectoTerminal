@@ -1,0 +1,12 @@
+services:
+  ia_trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile.ml
+    container_name: ml_trainer
+    volumes:
+      - ./Datos:/workspace/Datos
+      - ./Scripts:/workspace/Scripts
+      - ./Modelos:/workspace/Modelos
+      - ./Codigo_Fuente/backend/app/ml:/workspace/ml_libs
+    command: ["sleep", "infinity"]

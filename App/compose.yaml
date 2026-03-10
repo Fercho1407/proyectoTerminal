@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ../Programa/Codigo_Fuente/backend
+      dockerfile: Dockerfile
+    container_name: fastapi_back
+    env_file:
+      - ../Programa/Codigo_Fuente/backend/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      # Montamos los modelos entrenados en modo lectura
+      - ../Programa/Modelos:/app/models:ro
+    restart: always
+
+  frontend:
+    build:
+      context: ../Programa/Codigo_Fuente/frontend
+      dockerfile: Dockerfile
+    container_name: react_front
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
