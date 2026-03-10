@@ -1,8 +1,0 @@
-pandas
-numpy
-sqlachemy
-matplotlib
-tensorflow
-scikit-learn
-sqlalchemy
-joblib
