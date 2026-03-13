@@ -1,7 +1,7 @@
 // src/pages/Predicciones.tsx
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "./../config";
+import { API_URL } from "../config";
 import "./styles/Predicciones.css";
 
 type Producto = {

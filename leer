@@ -1,0 +1,19 @@
+Paso 1:
+    Correr el archivo
+    Programa/Scripts/clasificadores/clasififcador_perecederos.ipynb
+
+paso 2:
+    Correr el archivo
+    Programa/Scripts/generacion_datos/obtener_feriados_CDMX.ipynb
+
+paso 3:
+    Correr el archivo
+    Programa/Scripts/limpieza_datasets/normalizacion_fruits-vegetables_temporadas.ipynb
+
+paso 4:
+    Correr el archivo
+    Programa/Scripts/generacion_datos/generar_eventos_productos.ipynb
+
+paso 5:
+    Correr el archivo
+    Programa/Scripts/limpieza_datasets/completar_dataSet_ventas.ipynb

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Producto } from "../components/Producto";
-import { API_URL } from "./../config";
+import { API_URL } from "../config";
 import "./styles/Productos.css";
 
 export default function Productos() {

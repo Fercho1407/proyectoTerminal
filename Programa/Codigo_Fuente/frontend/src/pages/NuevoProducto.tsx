@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {API_URL} from "./../config";
+import {API_URL} from "../config";
 import "./styles/NuevoProducto.css"
 
 export default function NuevoProducto(){

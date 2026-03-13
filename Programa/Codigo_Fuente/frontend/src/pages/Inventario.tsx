@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "./../config";
+import { API_URL } from "../config";
 import FilaInventario from "./../components/FilaInventario";
 import "./styles/Inventario.css";
 

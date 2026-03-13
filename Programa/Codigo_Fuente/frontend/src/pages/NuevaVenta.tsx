@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { API_URL } from "./../config";
+import { API_URL } from "../config";
 import ItemVenta from "../components/ItemVenta";
 import "./styles/NuevaVenta.css"
 

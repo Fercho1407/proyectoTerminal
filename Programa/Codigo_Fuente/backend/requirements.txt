@@ -4,3 +4,7 @@ sqlalchemy
 pymysql
 python-dotenv
 pydantic
+joblib
+pandas
+scikit-learn
+tensorflow

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Indicadores from "./../components/dashboard/Indicadores";
 import GraficaVentas from "./../components/dashboard/GraficaVentas";
 import type { Resumen, PuntoTendencia } from "./../components/dashboard/tipos";
-import { API_URL } from "./../config";
+import { API_URL } from "../config";
 import "./styles/Dashboard.css";
 
 export default function Dashboard() {
