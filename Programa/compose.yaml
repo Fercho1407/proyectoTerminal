@@ -5,8 +5,8 @@ services:
       dockerfile: Dockerfile.ml
     container_name: ml_trainer
     volumes:
-      - ./Datos:/workspace/Datos
-      - ./Scripts:/workspace/Scripts
-      - ./Modelos:/workspace/Modelos
-      - ./Codigo_Fuente/backend/app/ml:/workspace/ml_libs
+      - ./Datos:/workspace/Datos:z
+      - ./Scripts:/workspace/Scripts:z
+      - ./Modelos:/workspace/Modelos:z
+      - ./Codigo_Fuente/backend/app/ml:/workspace/ml_libs:z
     command: ["sleep", "infinity"]

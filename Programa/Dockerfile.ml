@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Eliminamos el CMD de aquí para que el contenedor no haga nada por defecto
-# al iniciar, permitiendo que el 'command' del compose.yaml tome el control total.
+# al iniciar, permitiendo que el 'command' del compose.yaml tome el control total.``
