@@ -77,6 +77,7 @@ const ItemVenta = ({ item, productos, onRemove, canRemove, onChangeItem }: ItemV
       <td>
         <input
           type="number"
+          lang="en"
           min={1}
           value={item.precioUnitario} 
           onChange={(e) =>
