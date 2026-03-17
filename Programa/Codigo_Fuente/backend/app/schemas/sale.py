@@ -6,7 +6,7 @@ from datetime import datetime
 class SaleItemCreate(BaseModel):
     product_id: int
     qty: float = Field(gt=0)
-    unit: str = "piece"   # debe coincidir con tu ENUM
+    unit: str = "piece"
     unit_price: float = Field(ge=0)
 
 class SaleCreate(BaseModel):
