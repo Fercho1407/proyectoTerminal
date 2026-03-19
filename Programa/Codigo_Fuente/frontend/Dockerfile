@@ -7,7 +7,7 @@ COPY . .
 RUN npm run build
 
 # Etapa 2: Servidor ligero
-FROM nginx:stable-alpine
+FROM docker.io/library/nginx:stable-alpine
 # Copiamos el resultado del build (Vite usa 'dist', Webpack usa 'build')
 COPY --from=build /app/dist /usr/share/nginx/html
 

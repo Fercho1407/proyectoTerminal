@@ -8,9 +8,6 @@ services:
       - ../Programa/Codigo_Fuente/backend/.env
     ports:
       - "8000:8000"
-    volumes:
-      # Montamos los modelos entrenados en modo lectura
-      - ../Programa/Modelos:/app/models:ro
     restart: always
 
   frontend:
