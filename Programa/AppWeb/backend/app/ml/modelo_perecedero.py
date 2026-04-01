@@ -23,7 +23,7 @@ def _safe_encode_category(cat: str) -> int:
     return -1
 
 def predecir_perecedero(payload: dict) -> int:
-    """Recibe un dict con los features y regresa 1 (perecedero) o 0 (no)."""
+    """Recibe un diccionario con los features y regresa 1 (perecedero) o 0 (no)."""
     df = pd.DataFrame([payload])
     df["category_off"] = df["category_off"].apply(_safe_encode_category)
 

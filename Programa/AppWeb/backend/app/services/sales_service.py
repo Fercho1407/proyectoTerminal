@@ -19,7 +19,6 @@ def create_sale(db: Session, payload: dict) -> Sale:
         total=0,
     )
 
-    # Transacción manual
     try:
         db.add(sale)
         db.flush()  # para obtener sale.id
